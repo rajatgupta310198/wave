@@ -1,0 +1,15 @@
+{
+  "name": "wave",
+  "version": "0.0.1",
+  "description": "A simple music player",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js"
+  },
+  "author": "Rajat Gupta",
+  "license": "MIT",
+  "dependencies": {
+    "id3js": "^1.1.3",
+    "howler": "^2.0.9"
+  }
+}
