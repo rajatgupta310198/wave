@@ -41,6 +41,7 @@ module.exports = {
                 src:playList,
                 
             })
+            console.log(musicPlayer._src)
             songID = musicPlayer.play()
             playing = true
             console.log(playList)
