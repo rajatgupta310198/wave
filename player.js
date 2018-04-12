@@ -1,66 +1,88 @@
 const musicEngine = require('./musicEngine').musicEngine
 var Howler = require('howler')
 
-var musicPlayer  = new Howler.Howl({
-    src:[]
-})
-
 playList = []
+currentPlaying = 0
+previouslyPlaying = -1
 playing = false 
 paused = false
 vol = 0.5
 songID = null
-function resume(songID){
-    if(paused == true){
-        console.log("called resume" +' '+ songID)
-        musicPlayer.play(songID)
-        paused = false
-    }
+howlerbank = []
+
+
+var afterSongComple = () => {
+    // previouslyPlaying = currentPlaying
+    // currentPlaying = currentPlaying + 1
+    alert("Called afterSongComplete")
+
 }
+var addHowlerBank = (song) => {
+    return new Howler.Howl({
+        src:[song],
+        onend:() =>{
+            howlerbank.splice(0, 1)
+            playList.splice(0, 1)
+            howlerbank[0]['player'].play()
+        },
+        buffer: true,
+        rate:1.0
+    })
+}
+
+
+
 module.exports = {
-    playList: () =>{
+    playList:() =>{
         return playList
     },
-    
-    addSongs: (music) =>{
+    addSongs:(music) =>{
         playList.push(music)
-        if(playing == true){
-            musicPlayer._src = playList
-            console.log(musicPlayer._src)
-        }
-        //console.log(playList)
+        //console.log(currentPlaying)
+        howlerbank.push({'player':addHowlerBank(music), 'path':music})
     },
-    play: () =>{
-        
-        if(paused == true){
-            console.log('calling resume')
-            resume(songID)
+    play:() => {
+        if(playList == [] && howlerbank == []){
+            console.log('Enpmty playlist')
         }
-        else{
-            musicPlayer  = new Howler.Howl({
-                src:playList,
-                
-            })
-            console.log(musicPlayer._src)
-            songID = musicPlayer.play()
+        if(playing == false){
+            howlerbank[0]['player'].play()
             playing = true
-            console.log(playList)
-            playList.splice(0, 1)
-            
-            //musicPlayer.changeSrc(playList)
-            //songID = musicPlayer.play()
-        }
+            paused = false
+        } 
         
     },
-    pause:(songID) =>{
-        if(playing === true){
-            musicPlayer.pause(songID)
+    resume:() => {
+        if(paused == true){
+            howlerbank[0]['player'].play()
+            paused = false
+        }
+    },
+    pause:()=>{
+        if(playing == true && paused == false){
+            howlerbank[0]['player'].pause()
             paused = true
         }
     },
-    
-    state:{
-        'playing':playing
+    next:() => {
+        if(playList.length>1){
+            //previouslyPlaying = currentPlaying
+            howlerbank[0]['player'].stop()
+            
+            howlerbank.splice(0, 1)
+
+            howlerbank[0]['player'].play()
+            playList.splice(0, 1)
+            //currentPlaying = currentPlaying + 1
+            
+        }
+    },
+    stop:() =>{
+        if(playing == true || paused == true || paused == false){
+            howlerbank[0]['player'].stop()
+            howlerbank = []
+            playList = []
+        }
     }
-    
+
 }
