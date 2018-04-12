@@ -5,4 +5,4 @@ A cross platform music player built using [Electron.js](https://electronjs.org/)
 ```
 npm install
 npm start
-'''
+```
