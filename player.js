@@ -11,19 +11,23 @@ songID = null
 howlerbank = []
 
 
-var afterSongComple = () => {
-    // previouslyPlaying = currentPlaying
-    // currentPlaying = currentPlaying + 1
-    alert("Called afterSongComplete")
-
-}
 var addHowlerBank = (song) => {
     return new Howler.Howl({
         src:[song],
         onend:() =>{
             howlerbank.splice(0, 1)
             playList.splice(0, 1)
-            howlerbank[0]['player'].play()
+             
+            if(playList.length != 0){
+                
+                howlerbank[0]['player'].play()
+            }
+            if(playList.length == 0){
+                 
+                var elm = document.getElementById("playBtn")
+                elm.innerHTML = "Play"
+                playing = false
+            }
         },
         buffer: true,
         rate:1.0
@@ -79,9 +83,16 @@ module.exports = {
     },
     stop:() =>{
         if(playing == true || paused == true || paused == false){
-            howlerbank[0]['player'].stop()
-            howlerbank = []
-            playList = []
+            if(howlerbank != [])
+            {   console.log('Inside')
+                howlerbank[0]['player'].stop()
+                howlerbank = []
+                playList = []
+                playing = false
+                var elm = document.getElementById("playBtn")
+                elm.innerHTML = "Play"
+            }
+            
         }
     }
 
