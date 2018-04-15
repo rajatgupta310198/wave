@@ -7,10 +7,13 @@ function createWindow(){
     let win = new electron.BrowserWindow({
         width:1280,
         height:736,
-        resizable:false
+        resizable:false,
+        //transparent:true,
+        titleBarStyle:"hidden-inset",
+        
     })
     win.loadURL('file://' + __dirname + '/index.html')
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.on('closed', () => {
         win = null
     })

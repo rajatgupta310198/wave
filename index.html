@@ -1,12 +1,46 @@
 <html>
     <head>
         <title>
-            
+            Wave
         </title>
+        <link rel="stylesheet" href="css/materialize.min.css">
+        
+        <link href="fonts/material-icons.css">
+        <script src="js/materialize.min.js"></script>
     </head>
     <body>
+        <div class="navbar-fixed">
+            <nav class="nav-extended white">
+                <div class="container">
+                    <div class="nav-wrapper">
+                        <a href="#" class="brand-logo center grey-text text-darken-3">Logo</a>
+                        <ul class="right">
+                            <li id="pa"></li>
+                            <li id="pl"></li>
+                            <li id="nxt"></li>
+                        </ul>
+                    </div>
+                    <div class="nav-content">
+                        <ul class="tabs tabs-transparent">
+                            <li class="tab"><a href="#" class="grey-text text-darken-3">Albums</a></li>
+                            <li class="tab active"><a href="#" class="grey-text text-darken-3">Songs</a></li>
+                            <li class="tab"><a href="#" class="grey-text text-darken-3">Artist</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+         <br><br><br>
 
+        <div class="container" id="mainDiv">
+            <ul id="songs" class="collection with-header">
+                 
 
+            </ul>
+        </div>
+        
         <script src="handlers.js"></script>
+       
     </body>
 </html>
