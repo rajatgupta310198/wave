@@ -1,7 +1,9 @@
+
+
 var electron = require('electron');
 var app = require('electron').app;
-
-
+var fs = require("fs")
+var music = require("./musicEngine").musicEngine
 
 function createWindow(){
     let win = new electron.BrowserWindow({
@@ -12,12 +14,15 @@ function createWindow(){
         titleBarStyle:"hidden-inset",
         
     })
+    
     win.loadURL('file://' + __dirname + '/index.html')
-    //win.webContents.openDevTools()
+    win.webContents.openDevTools()
+    
     win.on('closed', () => {
         win = null
     })
 }
+
 
 
 app.on('ready', createWindow)
