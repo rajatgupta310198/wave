@@ -11,7 +11,8 @@ function createWindow(){
         height:736,
         resizable:false,
         //transparent:true,
-        titleBarStyle:"hidden-inset",
+        titleBarStyle:"hidden",
+        darkTheme:true
         
     })
     
