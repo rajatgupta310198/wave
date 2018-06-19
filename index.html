@@ -9,7 +9,7 @@
         <script src="js/materialize.min.js"></script>
     </head>
     <body>
-        <div class="navbar-fixed">
+        <div class="navbar-fixed" id="nav">
             <nav class="nav-extended white">
                 <div class="container">
                     <div class="nav-wrapper">
@@ -22,8 +22,8 @@
                     </div>
                     <div class="nav-content">
                         <ul class="tabs tabs-transparent">
-                            <li class="tab"><a href="#" class="grey-text text-darken-3">Albums</a></li>
-                            <li class="tab active"><a href="#" class="grey-text text-darken-3">Songs</a></li>
+                            <li class="tab"><a href="#albums" id="albumlink" class="grey-text text-darken-3">Albums</a></li>
+                            <li class="tab"><a href="#songs" id="songlink" class="grey-text text-darken-3">Songs</a></li>
                             <li class="tab"><a href="#" class="grey-text text-darken-3">Artist</a></li>
                         </ul>
                     </div>
@@ -35,12 +35,50 @@
 
         <div class="container" id="mainDiv">
             <ul id="songs" class="collection with-header">
-                 
+                
 
             </ul>
+            <div id="albums" class="container">
+                
+            </div>
         </div>
         
-        <script src="handlers.js"></script>
+        
+        
        
     </body>
+    <script src="handlers.js"></script>
+    <script src="basic.js"></script>
+    <script>
+        var album = document.getElementById("albums")
+        var songs = document.getElementById("songs")
+        var songlink = document.getElementById("songlink")
+        var albumlink= document.getElementById("albumlink")
+        // console.log(album, albumlink, songlink, songs)
+        albumlink.onclick = function(e){
+            e.preventDefault()
+            console.log("showing album")
+            songs.style.display = "none";
+            album.style.display = "block";
+        }
+        
+        songlink.onclick = function(e){
+            e.preventDefault()
+            console.log("showing songs")
+            album.style.display = "none";
+            songs.style.display = "block";
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
+  });
+    </script>
+    <style>
+        #albums{
+            display: none;
+        }
+        #songs{
+            display: block;
+        }
+    </style>
 </html>
