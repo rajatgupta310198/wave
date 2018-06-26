@@ -108,20 +108,17 @@ module.exports.UI = {
             console.log(player.GetPlayList() != [] && player.IsPlaying() == false)
             console.log(player.GetPlayList()) 
         if(player.GetPlayList().length>0 && player.IsPlaying() == false){
-            
-                this.innerHTML = "Pause"
+ 
                 player.Play()
 
             }
             else if(player.GetPlayList().length>0 && player.IsPaused() == false && player.IsPlaying() == true){
-                console.log('pause')
-                this.innerHTML = "Play"
+                
                 player.Pause()
 
             }
             else if(player.GetPlayList().length>0 && player.IsPaused() == true && player.IsPlaying() == true){
-                console.log('resume')
-                this.innerHTML = "Pause"
+                
                 player.Resume()
 
             }
@@ -132,7 +129,9 @@ module.exports.UI = {
         nextBtn.appendChild(document.createTextNode("Next"))
         nextBtn.setAttribute("class", "btn btn-waves waves effect blue")
         nextBtn.addEventListener("click", function(e){
-            player.Next()
+            if(player.GetPlayList().length > 0){
+                player.Next()
+            }  
         })
 
         var stopBtn = document.createElement("button")
@@ -178,14 +177,14 @@ module.exports.UI = {
             var song = listOfMp3[0]
             // console.log(tags)
             if(song['tag']==false){
-                img.setAttribute("src", "m.png")
+                img.setAttribute("src", "images/default_art.png")
             }
             else{
 
             
                 var imgobj = song['tags']['image']
                 if(imgobj== undefined){
-                    img.setAttribute("src", "m.png")
+                    img.setAttribute("src", "images/default_art.png")
                 }
                 else{
                     // console.log(btoa(imgobj.imageBuffer.data))

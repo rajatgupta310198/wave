@@ -34,12 +34,23 @@ Player.prototype.AddSongs = (songs) => {
         
         onplay:()=>{
 
+            var playbtn_ = document.getElementById("playBtn")
+            playbtn_.innerHTML = "Pause"
+
         },
         onend:() =>{
             if(this.playlist.length > 1){
                 this.Next()
             }
+            else{
+                var playbtn_ = document.getElementById("playBtn")
+                playbtn_.innerHTML = "Play"
+            }
             
+        },
+        onpause: () =>{
+            var playbtn_ = document.getElementById("playBtn")
+            playbtn_.innerHTML = "Play"
         },
         buffer: true,
         rate:1.0
@@ -54,7 +65,9 @@ Player.prototype.Play = () =>{
     // plays first track in playlist
     this.index = this.index + 1
     this.playing = true
+    
     console.log(this.index)
+    console.log(this.howlerbank[this.index])
     var song = this.howlerbank[this.index]
     song.play()
 }
@@ -75,12 +88,17 @@ Player.prototype.Pause = () =>{
 Player.prototype.Stop = () =>{
     if(this.playing == true){
         this.playing = false
-        this.playlist = []
+        
         this.howlerbank[this.index].stop()
+        howlerbank = []
+        playList = []
+
+        this.playlist = []
         this.howlerbank = []
         
-        playList = []
+        this.index  = -1
     }
+    // this.Init()
 }
 Player.prototype.Next = () =>{
     if(this.index < this.howlerbank.length -1)
