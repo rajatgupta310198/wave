@@ -13,6 +13,7 @@ if(lib == 0){
 }
 else{
     // console.log(lib.GetSongsDB())
+    console.log(lib)
     UI.ListDisplayAlbum(lib.GetSongsDB(), Player_)
     UI.ListDisplaySongs(lib.GetSongsDB(), Player_)
 }
