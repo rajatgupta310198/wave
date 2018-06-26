@@ -1,17 +1,20 @@
-var player = require("./player")
+
+ 
 module.exports.UI = {
-    'ListDisplaySongs': (listOfMp3s) =>{
+    'ListDisplaySongs': (listOfMp3s, player) =>{
         var ul = document.getElementById("songs")
 
         for(var i = 0; i < listOfMp3s["file"].length ; i++){
             var li = document.createElement("li")
+            li.setAttribute("class", "hoverable")
             var link = document.createElement("a")
             link.setAttribute("href", listOfMp3s['path'][i])
-            link.setAttribute("class", "grey-text text-darken-1")
+            link.setAttribute("class", "grey-text text-darken-1 hoverable")
             link.addEventListener("click", function(e){
                 e.preventDefault()
                 var music = this.getAttribute("href")
-                player.addSongs(music)
+                player.AddSongs(music)
+                // console.log(player)
             })
             link.appendChild(document.createTextNode(listOfMp3s['file'][i]))
             li.setAttribute("class", "collection-item")
@@ -92,7 +95,7 @@ module.exports.UI = {
         // document.body.appendChild(navbarFixed)
 
     },
-    'LoadControlButtons': () =>{
+    'LoadControlButtons': (player) =>{
 
         // adding control buttons
         console.log("Loading controls")
@@ -102,22 +105,24 @@ module.exports.UI = {
         playBtn.setAttribute("class", "btn btn-waves waves effect blue")
         playBtn.addEventListener("click", function(e){
             //console.log(this.innerHTML === 'Play')
-        if(this.innerHTML == "Play"){
-
+            console.log(player.GetPlayList() != [] && player.IsPlaying() == false)
+            console.log(player.GetPlayList()) 
+        if(player.GetPlayList().length>0 && player.IsPlaying() == false){
+            
                 this.innerHTML = "Pause"
-                player.play()
+                player.Play()
 
             }
-            else if(this.innerHTML == "Pause"){
+            else if(player.GetPlayList().length>0 && player.IsPaused() == false && player.IsPlaying() == true){
                 console.log('pause')
-                this.innerHTML = "Resume"
-                player.pause()
+                this.innerHTML = "Play"
+                player.Pause()
 
             }
-            else if(this.innerHTML == "Resume"){
+            else if(player.GetPlayList().length>0 && player.IsPaused() == true && player.IsPlaying() == true){
                 console.log('resume')
                 this.innerHTML = "Pause"
-                player.resume()
+                player.Resume()
 
             }
 
@@ -127,14 +132,14 @@ module.exports.UI = {
         nextBtn.appendChild(document.createTextNode("Next"))
         nextBtn.setAttribute("class", "btn btn-waves waves effect blue")
         nextBtn.addEventListener("click", function(e){
-            player.next()
+            player.Next()
         })
 
         var stopBtn = document.createElement("button")
         stopBtn.appendChild(document.createTextNode("Stop"))
         stopBtn.setAttribute("class", "btn btn-waves waves effect blue")
         stopBtn.addEventListener("click", function(e){
-            player.stop()
+            player.Stop()
             playBtn.innerHTML = "Play"
         })
         // appending to main body
@@ -145,7 +150,7 @@ module.exports.UI = {
         var pa = document.getElementById("pa")
         pa.appendChild(stopBtn)
     },
-    'ListDisplayAlbum':(db) =>{
+    'ListDisplayAlbum':(db, player) =>{
         var mainRow = document.getElementById("albums")
         var localdb = new Set(db["album"])
         var ulCollapsible = document.createElement("ul")
@@ -232,7 +237,7 @@ module.exports.UI = {
                 ali.addEventListener("click", function(e){
                     e.preventDefault()
                     var music = this.getAttribute("href")
-                    player.addSongs(music)})
+                    player.AddSongs(music)})
                 li.appendChild(ali)
                 ulSongs.appendChild(li)
             }
