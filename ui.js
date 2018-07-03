@@ -1,14 +1,12 @@
-
- 
 module.exports.UI = {
-    'ListDisplaySongs': (listOfMp3s, player) =>{
+    'ListDisplaySongs': (SongsDB, player) =>{
         var ul = document.getElementById("songs")
 
-        for(var i = 0; i < listOfMp3s["file"].length ; i++){
+        for(var i = 0; i < SongsDB["file"].length ; i++){
             var li = document.createElement("li")
             li.setAttribute("class", "hoverable")
             var link = document.createElement("a")
-            link.setAttribute("href", listOfMp3s['path'][i])
+            link.setAttribute("href", SongsDB['path'][i])
             link.setAttribute("class", "grey-text text-darken-1 hoverable")
             link.addEventListener("click", function(e){
                 e.preventDefault()
@@ -16,12 +14,54 @@ module.exports.UI = {
                 player.AddSongs(music)
                 // console.log(player)
             })
-            link.appendChild(document.createTextNode(listOfMp3s['file'][i]))
+            link.appendChild(document.createTextNode(SongsDB['file'][i]))
             li.setAttribute("class", "collection-item")
             li.appendChild(link)
             ul.appendChild(li)
             
         }
+    
+        // var table = document.getElementById("songs")
+        // table.style.fontSize = 10
+         
+        // for(var i=0; i <SongsDB['file'].length; i++){
+        //     var row = table.insertRow(i+1)
+            
+        //     var name = row.insertCell(0)
+        //     var artist = row.insertCell(1)
+        //     var album = row.insertCell(2)
+        //     var link = document.createElement("a")
+        //     link.addEventListener("click", function(e){
+        //         e.preventDefault()
+        //         var music = this.getAttribute("href")
+        //         player.AddSongs(music)
+
+        //     })
+        //     link.setAttribute("href", SongsDB['path'][i])
+        //     if(SongsDB['tags'][i]['title']!=""){
+        //         link.appendChild(document.createTextNode(SongsDB['tags'][i]['title']))
+        //     }
+        //     else{
+        //         link.appendChild(document.createTextNode(SongsDB['file'][i]))
+        //     }
+            
+        //     name.appendChild(link)
+
+        //     if(SongsDB['tags'][i]['artist'][0]!="" && SongsDB['tags'][i]['artist'][0]!=undefined){
+        //         artist.appendChild(document.createTextNode(SongsDB['tags'][i]['artist'][0]))
+        //     }
+        //     else{
+        //         artist.appendChild(document.createTextNode(""))
+        //     }
+        //     if(SongsDB['tags'][i]['album'][0]!=[]){
+        //         album.appendChild(document.createTextNode(SongsDB['tags'][i]['album']))
+        //     }
+        //     else{
+        //         album.appendChild(document.createTextNode(""))
+        //     }
+        // }
+
+
     },
     'LoadNav':() =>{
         var navbarFixed = document.getElementById("nav")
@@ -99,12 +139,11 @@ module.exports.UI = {
 
         // adding control buttons
         console.log("Loading controls")
-        var playBtn = document.createElement("button")
-        playBtn.appendChild(document.createTextNode('Play'))
-        playBtn.setAttribute("id", "playBtn")
-        playBtn.setAttribute("class", "btn btn-waves waves effect blue")
+        var playBtn = document.getElementById("playBtn")
+       
         playBtn.addEventListener("click", function(e){
             //console.log(this.innerHTML === 'Play')
+            e.preventDefault()
             console.log(player.GetPlayList() != [] && player.IsPlaying() == false)
             console.log(player.GetPlayList()) 
         if(player.GetPlayList().length>0 && player.IsPlaying() == false){
@@ -125,37 +164,31 @@ module.exports.UI = {
 
         })
 
-        var nextBtn = document.createElement("button")
-        nextBtn.appendChild(document.createTextNode("Next"))
-        nextBtn.setAttribute("class", "btn btn-waves waves effect blue")
+        var nextBtn = document.getElementById("nextBtn")
+       
         nextBtn.addEventListener("click", function(e){
             if(player.GetPlayList().length > 0){
                 player.Next()
             }  
         })
 
-        var stopBtn = document.createElement("button")
-        stopBtn.appendChild(document.createTextNode("Stop"))
-        stopBtn.setAttribute("class", "btn btn-waves waves effect blue")
+        var stopBtn = document.getElementById("stopBtn")
+       
         stopBtn.addEventListener("click", function(e){
             player.Stop()
-            playBtn.innerHTML = "Play"
+             
         })
-        // appending to main body
-        var pl = document.getElementById("pl")
-        pl.appendChild(playBtn)
-        var nxt = document.getElementById("nxt")
-        nxt.appendChild(nextBtn)
-        var pa = document.getElementById("pa")
-        pa.appendChild(stopBtn)
     },
-    'ListDisplayAlbum':(db, player) =>{
+    'ListDisplayAlbum':(SongsDB, player) =>{
         var mainRow = document.getElementById("albums")
-        var localdb = new Set(db["album"])
+        var localdb = new Set(SongsDB['album'])
+ 
+        // console.log(db)
+        
         var ulCollapsible = document.createElement("ul")
-        ulCollapsible.setAttribute("class", "collapsible popout")
+        ulCollapsible.setAttribute("class", "collapsible")
         localdb.forEach(element => {
-            // console.log(element)
+            console.log(element)
             // now apply filter in original database
 
             var upperCol = document.createElement("li")
@@ -168,30 +201,39 @@ module.exports.UI = {
             img.setAttribute("style", "height:120px;width:120px;")
             
             var listOfMp3 = []
-            for(var i=0;i<db["path"].length; i++){
-                if(element == db["album"][i]){
-                    // console.log(db["path"][i])
-                    listOfMp3.push({'tags':db['tags'][i], 'path':db['path'][i], 'file':db['file'][i]})
+            for(var i=0;i<SongsDB["path"].length; i++){
+                if(element == SongsDB["album"][i]){
+                    console.log(SongsDB["path"][i]) //Porn cute juvenile | Son Forces Mom to Fuck Him - Fifi Foxx and Cock Ninja
+                    listOfMp3.push({'tags':SongsDB['tags'][i], 'path':SongsDB['path'][i], 'file':SongsDB['file'][i]})
                 }
             }
             var song = listOfMp3[0]
             // console.log(tags)
-            if(song['tag']==false){
+            if(song['tags']==undefined){
                 img.setAttribute("src", "images/default_art.png")
             }
             else{
 
             
-                var imgobj = song['tags']['image']
-                if(imgobj== undefined){
+                var imgobj = song['tags']['picture']
+                if(imgobj.length < 1){
                     img.setAttribute("src", "images/default_art.png")
                 }
                 else{
                     // console.log(btoa(imgobj.imageBuffer.data))
-                    if(imgobj.mime == 'jpeg'){
+                    if(imgobj[0]['format'] == 'jpeg'){
                         var b64 = ""
-                        for(let i=0; i<imgobj.imageBuffer.data.length; i++){
-                            b64 += String.fromCharCode(imgobj.imageBuffer.data[i])
+                        for(let i=0; i<imgobj[0]['data'].length; i++){
+                            b64 += String.fromCharCode(imgobj[0]['data'][i])
+                        }
+                        var b64img = 'data:image/jpeg;base64,' + window.btoa(b64)
+                        img.setAttribute("src", b64img)
+                        
+                    }
+                    if(imgobj[0]['format'] == 'jpg'){
+                        var b64 = ""
+                        for(let i=0; i<imgobj[0]['data'].length; i++){
+                            b64 += String.fromCharCode(imgobj[0]['data'][i])
                         }
                         var b64img = 'data:image/jpeg;base64,' + window.btoa(b64)
                         img.setAttribute("src", b64img)
@@ -199,8 +241,8 @@ module.exports.UI = {
                     }
                     else{
                         var b64 = ""
-                        for(let i=0; i<imgobj.imageBuffer.data.length; i++){
-                            b64 += String.fromCharCode(imgobj.imageBuffer.data[i])
+                        for(let i=0; i<imgobj[0]['data'].length; i++){
+                            b64 += String.fromCharCode(imgobj[0]['data'][i])
                         }
                         var b64img = 'data:image/png;base64,' + window.btoa(b64)
                         img.setAttribute("src", b64img)
@@ -222,17 +264,15 @@ module.exports.UI = {
                 var ali = document.createElement("a")
                 ali.setAttribute("href", listOfMp3[i]["path"])
                 ali.setAttribute("class", "grey-text text-darken-1")
-                if(listOfMp3[i]['tags']!=false && listOfMp3[i]['tags']!=undefined){
-                    if(listOfMp3[i]['tags']['title']!=false && listOfMp3[i]['tags']['title']!=undefined){
+                
+                    if(listOfMp3[i]['tags']['title']!=""){
                         ali.appendChild(document.createTextNode(listOfMp3[i]['tags']['title']))
                     }
                     else{
                         ali.appendChild(document.createTextNode(listOfMp3[i]['file']))
                     }
-                }
-                else{
-                    ali.appendChild(document.createTextNode(listOfMp3[i]['file']))
-                }
+                
+                 
                 ali.addEventListener("click", function(e){
                     e.preventDefault()
                     var music = this.getAttribute("href")
@@ -248,26 +288,19 @@ module.exports.UI = {
             // collapsibleHeader.appendChild(document.createElement("hr"))
             collapsibleHeader.appendChild(document.createTextNode(element))
             collapsibleHeader.appendChild(document.createElement("br"))
-            if(song['tags']!=false && song['tags']!=undefined)
-            {
-                if(song['tags']['artist']!=undefined){
+            
+          
+                if(song['tags']['artist']!=""){
                     collapsibleHeader.appendChild(document.createTextNode(song['tags']['artist']))
                 }
                 else{
                     collapsibleHeader.appendChild(document.createTextNode("Unknown"))
                 }
-            }
-            else{
-                collapsibleHeader.appendChild(document.createTextNode("Unknown"))
-            }
-            
+ 
 
             upperCol.appendChild(collapsibleHeader)
             upperCol.appendChild(collapsibleBody)
-            // card.appendChild(ulSongs)
-            // card.appendChild(colArt)
-            // card.appendChild(colSongs)
-            // upperCol.appendChild(colArt)
+            
             ulCollapsible.appendChild(upperCol)
             mainRow.appendChild(ulCollapsible)
             document.body.appendChild(mainRow)

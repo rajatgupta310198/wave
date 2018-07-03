@@ -1,5 +1,6 @@
 const musicEngine = require('./musicEngine').musicEngine
 var Howler = require('howler')
+var mm = require("musicmetadata")
 
 playList = []
 currentPlaying = 0
@@ -18,49 +19,15 @@ var Player = function(){
     this.paused = false
     this.index = -1
 }
-Player.prototype.Init = () =>{
+Player.prototype.Init = (SongsDB) =>{
     this.playlist = playList
     this.howlerbank = howlerbank
     this.playing = playing
     this.paused = paused
     this.index = -1
+    this.SongsDB_ = SongsDB
 }
-Player.prototype.AddSongs = (songs) => {
-    playList.push(songs)
-    this.playlist = playList
-    
-    var ho = new Howler.Howl({
-        src:[songs],
-        
-        onplay:()=>{
 
-            var playbtn_ = document.getElementById("playBtn")
-            playbtn_.innerHTML = "Pause"
-
-        },
-        onend:() =>{
-            if(this.playlist.length > 1){
-                this.Next()
-            }
-            else{
-                var playbtn_ = document.getElementById("playBtn")
-                playbtn_.innerHTML = "Play"
-            }
-            
-        },
-        onpause: () =>{
-            var playbtn_ = document.getElementById("playBtn")
-            playbtn_.innerHTML = "Play"
-        },
-        buffer: true,
-        rate:1.0
-    })
-    howlerbank.push(ho)
-
-    this.howlerbank = howlerbank
-    // console.log(howlerbank)
-     
-}
 Player.prototype.Play = () =>{
     // plays first track in playlist
     this.index = this.index + 1
@@ -86,9 +53,17 @@ Player.prototype.Pause = () =>{
     }
 }
 Player.prototype.Stop = () =>{
+
     if(this.playing == true){
         this.playing = false
-        
+        var currentPlaying_ = document.getElementById("current-playing")
+            while(currentPlaying_.hasChildNodes()){
+                currentPlaying_.removeChild(currentPlaying_.lastChild)
+            }
+        var art = document.getElementById("current-playing-art")
+        art.src =  "images/music.png"
+        var playbtn_ = document.getElementById("playBtn").firstChild
+        playbtn_.innerHTML = "play_arrow"
         this.howlerbank[this.index].stop()
         howlerbank = []
         playList = []
@@ -101,6 +76,10 @@ Player.prototype.Stop = () =>{
     // this.Init()
 }
 Player.prototype.Next = () =>{
+    var currentPlaying_ = document.getElementById("current-playing")
+    while(currentPlaying_.hasChildNodes()){
+        currentPlaying_.removeChild(currentPlaying_.lastChild)
+    }
     if(this.index < this.howlerbank.length -1)
     {
         this.index = this.index + 1
@@ -123,7 +102,104 @@ Player.prototype.IsPaused = ()=>{
     return this.paused
 }
 
+Player.prototype.AddSongs = (songs) => {
+    playList.push(songs)
+    this.playlist = playList
+    
+    var ho = new Howler.Howl({
+        src:[songs],
+        
+        onplay:()=>{
 
+            var playbtn_ = document.getElementById("playBtn").firstChild
+            var currentPlaying_ = document.getElementById("current-playing")
+            var currentArt = document.getElementById("current-playing-art")
+            playbtn_.innerHTML = "pause"
+            // currentPlaying_.innerHTML = this.playlist
+            console.log(this.SongsDB_)
+            var indexLocal = this.SongsDB_['path'].findIndex(result => result==songs)
+            console.log(indexLocal)
+            var tags = this.SongsDB_['tags'][indexLocal]
+            console.log(tags)
+            var img = tags['picture']
+            console.log(img, img.length)
+            if(img.length == 1){
+                 
+                    var b64 = ""
+                    for(let i=0; i<img[0]['data'].length; i++){
+                        b64 += String.fromCharCode(img[0]['data'][i])
+                    }
+                    var b64img = 'data:image/' + img[0]['format'] + ';base64,' + window.btoa(b64)
+                    currentArt.setAttribute("src", b64img)
+                    
+                 
+                     
+                    var b64img = 'data:image/png;base64,' + window.btoa(b64)
+                    currentArt.setAttribute("src", b64img)
+                 
+            }
+            if(tags['title']!="" && tags['title']!=undefined)
+                {currentPlaying_.appendChild(document.createTextNode(tags['title']))}
+            else{
+                currentPlaying_.appendChild(document.createTextNode("Unknown"))
+            }
+            
+            currentPlaying_.appendChild(document.createElement("br"))
+            var divArtist = document.createElement("div")
+            divArtist.setAttribute("class", "grey-text text-darken-1")
+            if(tags['artist'][0]!=""&&tags['artist'][0]!=undefined){
+                
+                divArtist.appendChild(document.createTextNode(tags['artist'][0]))
+                // currentPlaying_.appendChild(divArtist)
+            }
+            else{
+                divArtist.appendChild(document.createTextNode("Unknown"))
+                
+            }
+            divArtist.appendChild(document.createElement("br"))
+            if(tags['album']!=""&&tags['album']!=undefined){
+                divArtist.appendChild(document.createTextNode(tags['album']))
+            }
+            else{
+                divArtist.appendChild(document.createTextNode("Unknown"))
+            }
+            currentPlaying_.appendChild(divArtist)
+            
+            
+
+        },
+        onend:() =>{
+            var currentPlaying_ = document.getElementById("current-playing")
+            while(currentPlaying_.hasChildNodes()){
+                currentPlaying_.removeChild(currentPlaying_.lastChild)
+            }
+            if(this.playlist.length > 1){
+                console.log("here onend")
+                this.index = this.index + 1
+                this.howlerbank[this.index-1].stop()
+                this.howlerbank[this.index].play()
+                
+            }
+            else{
+                console.log("here onend else")
+                var playbtn_ = document.getElementById("playBtn").firstChild
+                playbtn_.innerHTML = "play_arrow"
+            }
+            
+        },
+        onpause: () =>{
+            var playbtn_ = document.getElementById("playBtn").firstChild
+            playbtn_.innerHTML = "play_arrow"
+        },
+        buffer: true,
+        rate:1.0
+    })
+    howlerbank.push(ho)
+
+    this.howlerbank = howlerbank
+    // console.log(howlerbank)
+     
+}
 
 var addHowler = (song) => {
     return new Howler.Howl({
@@ -137,8 +213,8 @@ var addHowler = (song) => {
             }
             if(playList.length == 0){
                  
-                var elm = document.getElementById("playBtn")
-                elm.innerHTML = "Play"
+                var elm = document.getElementById("playBtn").firstChild
+                elm.innerHTML = "play_arrow"
                 playing = false
             }
         },
@@ -160,8 +236,8 @@ var addHowlerBank = (song) => {
             }
             if(playList.length == 0){
                  
-                var elm = document.getElementById("playBtn")
-                elm.innerHTML = "Play"
+                var elm = document.getElementById("playBtn").firstChild
+                elm.innerHTML = "play_arrow"
                 playing = false
             }
         },
@@ -169,6 +245,7 @@ var addHowlerBank = (song) => {
         rate:1.0
     })
 }
+
 
 module.exports = {
     'Player':Player,

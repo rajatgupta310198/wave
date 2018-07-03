@@ -6,73 +6,91 @@
         <link rel="stylesheet" href="css/materialize.min.css">
         <link rel="stylesheet" href="fonts/material-icons.css">
         <link href="fonts/material-icons.css">
+        <link href="css/style.css">
         <script src="js/materialize.min.js"></script>
         <style>
             html{
                 background-color: white;
             }
+            footer{
+                bottom: 0;
+                position: fixed;
+                width: 100%;
+            }
+            #main{
+                padding-bottom: 145px
+            }
         </style>
+        
     </head>
     <body>
-        <div class="navbar-fixed" id="nav">
-            <nav class="nav-extended white">
-                <div class="container">
-                    <div class="nav-wrapper">
-                        <a href="#" class="brand-logo center grey-text text-darken-3"><img style="height:60px;width:60px" src="images/music.png"></a>
-                        <ul class="right">
-                            <li id="pa"></li>
-                            <li id="pl"></li>
-                            <li id="nxt"></li>
-                        </ul>
+         
+
+        <div class="container" id="main">
+             <ul class="collection" id="songs">
+
+             </ul>
+                    
+            <div id="albums" class="container">
+                 
+
+            </div>
+
+        </div>
+        
+        
+        <footer class="page-footer white  z-depth-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12 m4">
+                        <div class="grey-text text-darken-3" style="margin-top:-10px;font-size:19px" id="current-playing"></div>
                     </div>
-                    <div class="nav-content">
-                        <ul class="tabs tabs-transparent">
-                            <li class="tab"><a href="#albums" id="albumlink" class="grey-text text-darken-3">Albums</a></li>
-                            <li class="tab"><a href="#songs" id="songlink" class="grey-text text-darken-3">Songs</a></li>
-                            <li class="tab"><a href="#" class="grey-text text-darken-3">Artist</a></li>
-                        </ul>
+                    <div class="col s12 m4">
+                           <center>
+                                <img id="current-playing-art" src="images/music.png" style="height:60px;width:60px">
+                           </center>
+                        
+                        <div class="progress">
+                            <div class="indeterminate"></div>
+                        </div>
+                        <center>
+                            <a href="#" class="btn-floating  waves-effect waves-light grey" id="stopBtn"><i class="material-icons">stop</i></a>
+                        <a href="#" class="btn-floating  waves-effect waves-light grey" id="playBtn"><i class="material-icons">play_arrow</i></a>
+                        <a href="#" class="btn-floating  waves-effect waves-light grey" id="nextBtn"><i class="material-icons">skip_next</i></a>
+                        </center>
+                    </div>
+                    <div class="col s12 m4">
+                        <!-- <div id="pa"></div>
+                        <div id="pl"></div>
+                        <div id="nxt"></div> -->
+                        
                     </div>
                 </div>
-            </nav>
-        </div>
-        
-         <br><br><br>
-
-        <div class="container" id="mainDiv">
-            <ul id="songs" class="collection with-header">
-                
-
-            </ul>
-            <div id="albums" class="container">
-                
             </div>
-        </div>
-        
-        
-        
+          </footer>
        
     </body>
     <script src="handlers.js"></script>
     <script src="basic.js"></script>
     <script>
-        var album = document.getElementById("albums")
-        var songs = document.getElementById("songs")
-        var songlink = document.getElementById("songlink")
-        var albumlink= document.getElementById("albumlink")
-        // console.log(album, albumlink, songlink, songs)
-        albumlink.onclick = function(e){
-            e.preventDefault()
-            console.log("showing album")
-            songs.style.display = "none";
-            album.style.display = "block";
-        }
+        // var album = document.getElementById("albums")
+        // var songs = document.getElementById("songs")
+        // var songlink = document.getElementById("songlink")
+        // var albumlink= document.getElementById("albumlink")
+        // // console.log(album, albumlink, songlink, songs)
+        // albumlink.onclick = function(e){
+        //     e.preventDefault()
+        //     console.log("showing album")
+        //     songs.style.display = "none";
+        //     album.style.display = "block";
+        // }
         
-        songlink.onclick = function(e){
-            e.preventDefault()
-            console.log("showing songs")
-            album.style.display = "none";
-            songs.style.display = "block";
-        }
+        // songlink.onclick = function(e){
+        //     e.preventDefault()
+        //     console.log("showing songs")
+        //     album.style.display = "none";
+        //     songs.style.display = "block";
+        // }
         document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
