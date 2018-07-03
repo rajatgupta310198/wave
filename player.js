@@ -26,8 +26,26 @@ Player.prototype.Init = (SongsDB) =>{
     this.paused = paused
     this.index = -1
     this.SongsDB_ = SongsDB
+    this.repeat = false
 }
-
+Player.prototype.setRepeat = () =>{
+    if(this.repeat==false)
+    {
+        this.repeat = true
+        var repeatBtn = document.getElementById("repeatBtn")
+        repeatBtn.setAttribute("class", "btn-floating tooltipped waves-effect waves-light grey text-darken-2")
+        repeatBtn.setAttribute("data-tooltip", "off repeat")
+    }
+    else
+    {
+        this.repeat = false
+        
+        var repeatBtn = document.getElementById("repeatBtn")
+        repeatBtn.setAttribute("class", "tooltipped grey-text")
+        repeatBtn.setAttribute("data-tooltip", "repeat")
+        // repeatBtn.setAttribute("class", "btn-floating  waves-effect waves-light grey text-darken-1")
+    }
+}
 Player.prototype.Play = () =>{
     // plays first track in playlist
     this.index = this.index + 1
@@ -55,11 +73,15 @@ Player.prototype.Pause = () =>{
 Player.prototype.Stop = () =>{
 
     if(this.playing == true){
-        this.playing = false
+        this.playing = false;
+        var timeElement = document.getElementById("time")
+            timeElement.innerHTML = ""
         var currentPlaying_ = document.getElementById("current-playing")
             while(currentPlaying_.hasChildNodes()){
                 currentPlaying_.removeChild(currentPlaying_.lastChild)
             }
+            var prog = document.getElementById("prog")
+            prog.removeAttribute("class")
         var art = document.getElementById("current-playing-art")
         art.src =  "images/music.png"
         var playbtn_ = document.getElementById("playBtn").firstChild
@@ -101,7 +123,22 @@ Player.prototype.IsPlaying = ()=>{
 Player.prototype.IsPaused = ()=>{
     return this.paused
 }
-
+function formatTime(secs){
+    var minutes = Math.floor(secs/60) || 0
+    var seconds = (secs - minutes * 60) || 0
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+function step(){
+    var sound = this.howlerbank[this.index]
+    var seek = sound.seek() || 0;
+    var timeElement = document.getElementById("time")
+    // var progress = document.getElementsByClassName("pro")
+    // progress.style.width = (((seek / sound.duration()) * 100) || 0) + '%';
+    timeElement.innerHTML = formatTime(Math.round(seek))
+    if(sound.playing){
+        requestAnimationFrame(step.bind(this))
+    }
+}
 Player.prototype.AddSongs = (songs) => {
     playList.push(songs)
     this.playlist = playList
@@ -110,13 +147,19 @@ Player.prototype.AddSongs = (songs) => {
         src:[songs],
         
         onplay:()=>{
-
+            var timeElement = document.getElementById("time")
+            var prog = document.getElementById("prog")
+            prog.removeAttribute("class")
+            prog.setAttribute("class", "indeterminate")
+            timeElement.innerHTML = formatTime(Math.round(this.howlerbank[this.index].duration()))
+            requestAnimationFrame(step.bind(this))
             var playbtn_ = document.getElementById("playBtn").firstChild
             var currentPlaying_ = document.getElementById("current-playing")
             var currentArt = document.getElementById("current-playing-art")
             playbtn_.innerHTML = "pause"
             // currentPlaying_.innerHTML = this.playlist
-            console.log(this.SongsDB_)
+            if(currentPlaying_.hasChildNodes()==false)
+            {console.log(this.SongsDB_)
             var indexLocal = this.SongsDB_['path'].findIndex(result => result==songs)
             console.log(indexLocal)
             var tags = this.SongsDB_['tags'][indexLocal]
@@ -137,6 +180,9 @@ Player.prototype.AddSongs = (songs) => {
                     var b64img = 'data:image/png;base64,' + window.btoa(b64)
                     currentArt.setAttribute("src", b64img)
                  
+            }
+            else{
+                currentArt.setAttribute("src", "images/music.png")
             }
             if(tags['title']!="" && tags['title']!=undefined)
                 {currentPlaying_.appendChild(document.createTextNode(tags['title']))}
@@ -163,7 +209,7 @@ Player.prototype.AddSongs = (songs) => {
             else{
                 divArtist.appendChild(document.createTextNode("Unknown"))
             }
-            currentPlaying_.appendChild(divArtist)
+            currentPlaying_.appendChild(divArtist)}
             
             
 
@@ -173,17 +219,30 @@ Player.prototype.AddSongs = (songs) => {
             while(currentPlaying_.hasChildNodes()){
                 currentPlaying_.removeChild(currentPlaying_.lastChild)
             }
-            if(this.playlist.length > 1){
+            var prog = document.getElementById("prog")
+            prog.removeAttribute("class")
+            var timeElement = document.getElementById("time")
+            timeElement.innerHTML = ""
+            var currentArt = document.getElementById("current-playing-art")
+            currentArt.setAttribute("src", "images/music.png")
+            console.log(this.playlist.length-1 > this.index)
+            if(this.playlist.length-1 > this.index){
                 console.log("here onend")
                 this.index = this.index + 1
                 this.howlerbank[this.index-1].stop()
                 this.howlerbank[this.index].play()
                 
             }
+            if(this.repeat == true && this.index == this.playlist.length-1){
+                this.index = 0
+                this.howlerbank[this.index].play()
+            }
             else{
                 console.log("here onend else")
                 var playbtn_ = document.getElementById("playBtn").firstChild
                 playbtn_.innerHTML = "play_arrow"
+                this.index = -1
+                this.playing = false
             }
             
         },

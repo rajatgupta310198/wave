@@ -9,11 +9,14 @@
         <link href="css/style.css">
         <script src="js/materialize.min.js"></script>
         <style>
-            html{
-                background-color: white;
+            body{
+                /* background-color: #ffffff;
+                opacity: 0.6; */
             }
+        
             footer{
                 bottom: 0;
+                z-index: 100;
                 position: fixed;
                 width: 100%;
             }
@@ -25,7 +28,7 @@
     </head>
     <body>
          
-
+         
         <div class="container" id="main">
              <ul class="collection" id="songs">
 
@@ -46,13 +49,16 @@
                         <div class="grey-text text-darken-3" style="margin-top:-10px;font-size:19px" id="current-playing"></div>
                     </div>
                     <div class="col s12 m4">
+                        
                            <center>
                                 <img id="current-playing-art" src="images/music.png" style="height:60px;width:60px">
                            </center>
-                        
+                           
                         <div class="progress">
-                            <div class="indeterminate"></div>
+                            
+                            <div id="prog" class="determinate"></div>
                         </div>
+                        
                         <center>
                             <a href="#" class="btn-floating  waves-effect waves-light grey" id="stopBtn"><i class="material-icons">stop</i></a>
                         <a href="#" class="btn-floating  waves-effect waves-light grey" id="playBtn"><i class="material-icons">play_arrow</i></a>
@@ -60,6 +66,12 @@
                         </center>
                     </div>
                     <div class="col s12 m4">
+                            <div id="time" class="grey-text text-darken-2"> </div>
+
+                                <a href="#" id="repeatBtn" class="tooltiped grey-text" data-position="bottom" data-tooltip="I am a tooltip">
+                                    <i class="material-icons">repeat</i>
+                                </a>
+                            
                         <!-- <div id="pa"></div>
                         <div id="pl"></div>
                         <div id="nxt"></div> -->
@@ -71,7 +83,7 @@
        
     </body>
     <script src="handlers.js"></script>
-    <script src="basic.js"></script>
+     
     <script>
         // var album = document.getElementById("albums")
         // var songs = document.getElementById("songs")
@@ -94,6 +106,8 @@
         document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
+    var elemsTooltip = document.querySelectorAll('.tooltipped');
+    var instances_ = M.Tooltip.init(elemsTooltip);
   });
     </script>
     <style>

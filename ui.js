@@ -1,24 +1,70 @@
+
 module.exports.UI = {
     'ListDisplaySongs': (SongsDB, player) =>{
         var ul = document.getElementById("songs")
-
+        console.log(SongsDB["file"].length)
         for(var i = 0; i < SongsDB["file"].length ; i++){
             var li = document.createElement("li")
-            li.setAttribute("class", "hoverable")
+            li.setAttribute("class", "collection-item avatar")
+            li.setAttribute("style", "font-size:12px")
+            var img = document.createElement("img")
+            if(SongsDB['tags'][i]['picture'].length ==1){
+                var imgobj = SongsDB['tags'][i]['picture']
+                var b64 = ""
+                    for(let i=0; i<imgobj[0]['data'].length; i++){
+                        b64 += String.fromCharCode(imgobj[0]['data'][i])
+                    }
+                    var b64img = 'data:image/' + imgobj[0]['format'] + ';base64,' + window.btoa(b64)
+                    img.setAttribute("src", b64img)
+            }
+            else{
+                img.setAttribute("src", "images/default_art.png")
+            }
+            img.setAttribute("class", "circle")
+            var span = document.createElement("span")
+            span.setAttribute("class", "title")
+            if(SongsDB['tags'][i]['title']!="" && SongsDB['tags'][i]['title']!=undefined)
+                {
+                    span.appendChild(document.createTextNode(SongsDB['tags'][i]['title']))
+                }
+            else{
+                span.appendChild(document.createTextNode(SongsDB['file'][i]))
+            }
+            var p = document.createElement("p")
+            if(SongsDB['tags'][i]['artist'][0]!="" && SongsDB['tags'][i]['artist'][0]!=undefined){
+                p.appendChild(document.createTextNode(SongsDB['tags'][i]['artist'][0]))
+            }
+            else{
+                p.appendChild(document.createTextNode("Unknown"))
+            }
+            p.appendChild(document.createElement("br"))
+            if(SongsDB['tags'][i]['album']!="" && SongsDB['tags'][i]['album']!=undefined){
+                p.appendChild(document.createTextNode(SongsDB['tags'][i]['album']))
+            }
+            else{
+                p.appendChild(document.createTextNode("Unknown"))
+            }
             var link = document.createElement("a")
             link.setAttribute("href", SongsDB['path'][i])
-            link.setAttribute("class", "grey-text text-darken-1 hoverable")
+            link.setAttribute("class", "secondary-content btn-floating grey hoverable")
+            var i_ = document.createElement("i")
+            i_.setAttribute("class", "material-icons")
+            i_.appendChild(document.createTextNode("play_arrow"))
             link.addEventListener("click", function(e){
                 e.preventDefault()
                 var music = this.getAttribute("href")
+                M.toast({html: 'Added to playlist', classes: 'rounded'});
                 player.AddSongs(music)
                 // console.log(player)
             })
-            link.appendChild(document.createTextNode(SongsDB['file'][i]))
-            li.setAttribute("class", "collection-item")
+            link.appendChild(i_)
+            
+            li.appendChild(img)
+            li.appendChild(span)
+            li.appendChild(p)
             li.appendChild(link)
             ul.appendChild(li)
-            
+            // console.log(SongsDB['path'][i])
         }
     
         // var table = document.getElementById("songs")
@@ -178,6 +224,11 @@ module.exports.UI = {
             player.Stop()
              
         })
+        var repeatBtn = document.getElementById("repeatBtn")
+        repeatBtn.addEventListener("click", function(e){
+            e.preventDefault()
+            player.setRepeat()
+        })
     },
     'ListDisplayAlbum':(SongsDB, player) =>{
         var mainRow = document.getElementById("albums")
@@ -306,6 +357,26 @@ module.exports.UI = {
             document.body.appendChild(mainRow)
         });
         
+    },
+    'songsLoader':() =>{
+        var divLoader = document.createElement("div")
+        divLoader.setAttribute("id", "songs-loader")
+        divLoader.setAttribute("class", "container")
+        var loader = document.createElement("div")
+        loader.setAttribute("class","progress")
+        loader.setAttribute("id", "songs-loader-inner")
+        var intd = document.createElement("div")
+        intd.setAttribute("class", "indeterminate grey")
+        loader.appendChild(intd)
+        divLoader.appendChild(loader)
+        document.body.appendChild(divLoader)
+    },
+    'showDragAndDrop':() =>{
+        var dragFileElement = document.createElement("div")
+        dragFileElement.setAttribute("class", "container grey-text text-darken-3")
+        dragFileElement.setAttribute("id", "drag-file")
+        dragFileElement.appendChild(document.createTextNode("Drop your music directory here..."))
+        document.body.appendChild(dragFileElement)
     }
 
 }
