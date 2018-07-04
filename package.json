@@ -4,7 +4,10 @@
   "description": "A simple music player",
   "main": "index.js",
   "scripts": {
-    "start": "electron index.js"
+    "start": "electron index.js",
+    "package": "npm-run-all package:*",
+    "package:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=out --icon=images/Wave@2x.icns"
+    
   },
   "author": "Rajat Gupta",
   "license": "MIT",
@@ -14,6 +17,9 @@
     "howler": "^2.0.9"
   },
   "devDependencies": {
-    "electron": "2.0.4"
+    "electron": "2.0.4",
+    "electron-packager": "^12.1.0",
+    "npm-run-all": "^4.0.2",
+    "electron-winstaller": "^2.2.0"
   }
-}
+} 

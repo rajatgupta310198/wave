@@ -16,6 +16,9 @@ if(fs.existsSync(__dirname + '/config.json')){
             // setTimeout(()=>{
             var l = document.getElementById("songs-loader")
             l.style.display = 'none'
+            var so = document.getElementById("songs")
+            so.style.display = 'block'
+            so.style.backgroundImage = 'linear-gradient(to top, #86377b 20%, #27273c 80%);'
             Player_.Init(SongsDB)
             UI.ListDisplaySongs(SongsDB, Player_)
             M.toast({html: 'Songs Added', classes: 'rounded'});
@@ -44,6 +47,9 @@ else{
                     // setTimeout(()=>{
                     var ele = document.getElementById("drag-file")
                     var l = document.getElementById("songs-loader")
+                    var so = document.getElementById("songs")
+                    so.style.display = 'block'
+                    so.style.backgroundImage = 'linear-gradient(to top, #86377b 20%, #27273c 80%);'
                     l.style.display = 'none'
                     document.body.removeChild(ele)
                     Player_.Init(SongsDB)
