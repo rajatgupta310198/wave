@@ -1,13 +1,12 @@
 {
   "name": "wave",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "A simple music player",
   "main": "index.js",
   "scripts": {
     "start": "electron index.js",
-    "package": "npm-run-all package:*",
-    "package:mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=out --icon=images/Wave@2x.icns"
-    
+    "package": "",
+    "build": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=build  --icon=images/wave-alpha.icns"
   },
   "author": "Rajat Gupta",
   "license": "MIT",
@@ -17,9 +16,10 @@
     "howler": "^2.0.9"
   },
   "devDependencies": {
+    "asar": "^0.14.3",
     "electron": "2.0.4",
     "electron-packager": "^12.1.0",
-    "npm-run-all": "^4.0.2",
-    "electron-winstaller": "^2.2.0"
+    "electron-winstaller": "^2.2.0",
+    "npm-run-all": "^4.0.2"
   }
-} 
+}
