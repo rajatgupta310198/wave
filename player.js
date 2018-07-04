@@ -249,6 +249,9 @@ Player.prototype.AddSongs = (songs) => {
         onpause: () =>{
             var playbtn_ = document.getElementById("playBtn").firstChild
             playbtn_.innerHTML = "play_arrow"
+            var prog = document.getElementById("prog")
+            prog.removeAttribute("class")
+            prog.setAttribute("class", "determinate")
         },
         buffer: true,
         rate:1.0

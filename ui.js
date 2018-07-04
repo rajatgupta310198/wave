@@ -5,7 +5,7 @@ module.exports.UI = {
         console.log(SongsDB["file"].length)
         for(var i = 0; i < SongsDB["file"].length ; i++){
             var li = document.createElement("li")
-            li.setAttribute("class", "collection-item avatar")
+            li.setAttribute("class", "collection-item avatar hoverable")
             li.setAttribute("style", "font-size:12px")
             var img = document.createElement("img")
             if(SongsDB['tags'][i]['picture'].length ==1){
@@ -23,6 +23,7 @@ module.exports.UI = {
             img.setAttribute("class", "circle")
             var span = document.createElement("span")
             span.setAttribute("class", "title")
+            
             if(SongsDB['tags'][i]['title']!="" && SongsDB['tags'][i]['title']!=undefined)
                 {
                     span.appendChild(document.createTextNode(SongsDB['tags'][i]['title']))
@@ -37,6 +38,7 @@ module.exports.UI = {
             else{
                 p.appendChild(document.createTextNode("Unknown"))
             }
+           
             p.appendChild(document.createElement("br"))
             if(SongsDB['tags'][i]['album']!="" && SongsDB['tags'][i]['album']!=undefined){
                 p.appendChild(document.createTextNode(SongsDB['tags'][i]['album']))
@@ -58,6 +60,12 @@ module.exports.UI = {
                 // console.log(player)
             })
             link.appendChild(i_)
+            li.onmouseover = function(){
+                this.style.background = "#ffff"
+            }
+            li.onmouseout = function(){
+                this.style.background = 'white'
+            }
             
             li.appendChild(img)
             li.appendChild(span)
@@ -66,47 +74,6 @@ module.exports.UI = {
             ul.appendChild(li)
             // console.log(SongsDB['path'][i])
         }
-    
-        // var table = document.getElementById("songs")
-        // table.style.fontSize = 10
-         
-        // for(var i=0; i <SongsDB['file'].length; i++){
-        //     var row = table.insertRow(i+1)
-            
-        //     var name = row.insertCell(0)
-        //     var artist = row.insertCell(1)
-        //     var album = row.insertCell(2)
-        //     var link = document.createElement("a")
-        //     link.addEventListener("click", function(e){
-        //         e.preventDefault()
-        //         var music = this.getAttribute("href")
-        //         player.AddSongs(music)
-
-        //     })
-        //     link.setAttribute("href", SongsDB['path'][i])
-        //     if(SongsDB['tags'][i]['title']!=""){
-        //         link.appendChild(document.createTextNode(SongsDB['tags'][i]['title']))
-        //     }
-        //     else{
-        //         link.appendChild(document.createTextNode(SongsDB['file'][i]))
-        //     }
-            
-        //     name.appendChild(link)
-
-        //     if(SongsDB['tags'][i]['artist'][0]!="" && SongsDB['tags'][i]['artist'][0]!=undefined){
-        //         artist.appendChild(document.createTextNode(SongsDB['tags'][i]['artist'][0]))
-        //     }
-        //     else{
-        //         artist.appendChild(document.createTextNode(""))
-        //     }
-        //     if(SongsDB['tags'][i]['album'][0]!=[]){
-        //         album.appendChild(document.createTextNode(SongsDB['tags'][i]['album']))
-        //     }
-        //     else{
-        //         album.appendChild(document.createTextNode(""))
-        //     }
-        // }
-
 
     },
     'LoadNav':() =>{

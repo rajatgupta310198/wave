@@ -2,42 +2,6 @@ var electron = require('electron');
 var app = require('electron').app;
 var fs = require("fs")
 var music = require("./musicEngine").musicEngine
-// const {Menu} = require('electron')
-// const template = [
-//     {
-//         label:'File',
-//         submenu:[
-//             {
-//                 label:'Add Library',
-
-//                 click() { alert("Will add soon") }
-//             }
-//         ]
-//     }
-// ]
-// if(process.platform == 'darwin'){
-//     template.unshift({
-//         label:'Wave',
-//         submenu:[
-//             {
-//                 label:'About Wave',
-                 
-//                 click(){
-
-//                 }
-//             },
-//             {role:'Services', submenu:[]},
-//             {
-//                 label:'Quit Wave',
-//                 accelarator:'CmdOrCtrl+Q',
-//                 click(){
-//                     app.quit()
-//                 }
-//             }
-//         ]
-//     })
-    
-// }
 
 
 
