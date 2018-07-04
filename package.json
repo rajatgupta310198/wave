@@ -1,12 +1,12 @@
 {
-  "name": "wave",
+  "name": "Wave",
   "version": "0.0.5",
   "description": "A simple music player",
   "main": "index.js",
   "scripts": {
     "start": "electron index.js",
-    "package": "",
-    "build": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=build  --icon=images/wave-alpha.icns"
+    "package": "asar pack build/Wave-darwin-x64/Wave.app/Contents/Resources/app build/Wave-darwin-x64/Wave.app/Contents/Resources/app.asar",
+    "build": "electron-packager . --overwrite  --platform=darwin --arch=x64 --out=build  --icon=images/wave-alpha.icns"
   },
   "author": "Rajat Gupta",
   "license": "MIT",
