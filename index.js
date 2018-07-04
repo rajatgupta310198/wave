@@ -2,22 +2,26 @@ var electron = require('electron');
 var app = require('electron').app;
 var fs = require("fs")
 var music = require("./musicEngine").musicEngine
+var path = require("path")
 
 
 
 function createWindow(){
+    
     let win = new electron.BrowserWindow({
-        width:1280,
-        height:736,
+        width:1040,
+        height:820,
         resizable:false,
         // transparent:true,
-        titleBarStyle:"hidden",
-        darkTheme:true,
+        
+        // darkTheme:true,
         // frame:false
+        titleBarStyle:"hidden"
+        
         
     })
     
-    
+    console.log(app.getAppPath('wave'))
     
     win.loadURL('file://' + __dirname + '/index.html')
     // win.webContents.openDevTools()
