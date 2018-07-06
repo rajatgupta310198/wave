@@ -1,4 +1,3 @@
-const id3 = require('node-id3')
 const fs = require("fs")
 const mm = require("musicmetadata")
 
