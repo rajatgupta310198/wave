@@ -48,6 +48,7 @@ Player.prototype.setRepeat = () =>{
 }
 Player.prototype.Play = () =>{
     // plays first track in playlist
+    
     this.index = this.index + 1
     this.playing = true
     
@@ -72,6 +73,8 @@ Player.prototype.Pause = () =>{
 }
 Player.prototype.Stop = () =>{
 
+
+    /* need to look over itnp */
     if(this.playing == true){
         this.playing = false;
         var timeElement = document.getElementById("time")
@@ -135,7 +138,7 @@ function step(){
     // var progress = document.getElementsByClassName("pro")
     // progress.style.width = (((seek / sound.duration()) * 100) || 0) + '%';
     timeElement.innerHTML = formatTime(Math.round(seek))
-    if(sound.playing){
+    if(sound.playing()){
         requestAnimationFrame(step.bind(this))
     }
 }
@@ -233,7 +236,7 @@ Player.prototype.AddSongs = (songs) => {
                 this.howlerbank[this.index].play()
                 
             }
-            if(this.repeat == true && this.index == this.playlist.length-1){
+            else if(this.repeat == true && this.index == this.playlist.length-1){
                 this.index = 0
                 this.howlerbank[this.index].play()
             }
@@ -259,6 +262,8 @@ Player.prototype.AddSongs = (songs) => {
     howlerbank.push(ho)
 
     this.howlerbank = howlerbank
+    
+    // if(this.howlerbank.length)
     // console.log(howlerbank)
      
 }
