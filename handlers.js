@@ -71,38 +71,16 @@ else{
                             Player_.AddSongsDataBase(SongsDB)
                         }
                         UI.ListDisplaySongs(SongsDB, Player_)
+                        UI.hideDragAndDrop()
                         M.toast({html: 'Songs Added', classes: 'rounded'})
                         var config = {
                             "libPath":pathLib
                         }
-                        // var  jsCONTENT = JSON.stringify(config)
-                        // fs.writeFile("config.json", jsCONTENT, "utf-8", function(err){
-                        //     if(err){
-                        //         console.log(err)
-                        //     }
-                        //     else{
-                        //         console.log("saved")
-                        //     }
-                        // })
-                    
-                    // }, 1)
+                        
                 }
             )
             
-            // setTimeout(() => {
-    
-            //     if(lib == 0){
-            
-            //     }
-            //     else{
-            //         console.log("loading songs")
-            //         Player_.Init(lib.GetSongsDB())
-            //         UI.ListDisplaySongs(lib.GetSongsDB(), Player_)
-            //         // UI.ListDisplayAlbum(lib.GetSongsDB(), Player_)
-                    
-            //     }
-            
-            // }, 3200);
+          
           });
           document.addEventListener('dragover', function (e) {
             e.preventDefault();

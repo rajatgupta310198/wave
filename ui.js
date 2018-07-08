@@ -191,6 +191,13 @@ module.exports.UI = {
             player.Stop()
              
         })
+
+        var previousBtn = document.getElementById("prevBtn")
+       
+        previousBtn.addEventListener("click", function(e){
+            player.Previous()
+             
+        })
         var repeatBtn = document.getElementById("repeatBtn")
         repeatBtn.addEventListener("click", function(e){
             e.preventDefault()
@@ -206,12 +213,21 @@ module.exports.UI = {
             while(playlistUL.hasChildNodes()){
                 playlistUL.removeChild(playlistUL.lastChild)
             }
+
             var lis = document.createElement("li")
+            var a = document.createElement("a")
+            a.setAttribute("href", "#")
+            a.setAttribute("class", "grey-text")
+            a.addEventListener("click", function(){
+                e.preventDefault()
+            })
             var i = document.createElement("i")
             i.setAttribute("class", "material-icons")
             i.innerHTML = "hourglass_empty"
-            lis.appendChild(i)
-            lis.appendChild(document.createTextNode("No songs :/"))
+            a.appendChild(document.createTextNode("No songs :/"))
+            a.appendChild(i)
+            lis.appendChild(a)
+            
             playlistUL.appendChild(lis)
         }
         if(player.GetPlayList().length >0){
@@ -222,6 +238,7 @@ module.exports.UI = {
             var SongsDB = player.GetSongsDB()
             
             var li = document.createElement("li")
+
             var index = SongsDB['path'].findIndex(result => result == playlist[playlist.length-1])
             console.log(SongsDB['file'],playlist[playlist.length-1],index)
             var keys = Object.keys(SongsDB['tags'][index])
@@ -230,9 +247,17 @@ module.exports.UI = {
                 name = SongsDB['tags'][index][keys[0]]
             } 
             if(name == undefined || name ==""){
-                name = "Unknown"
+                name = SongsDB['file'][index]
             }
-            li.appendChild(document.createTextNode(name))
+
+            var a = document.createElement("a")
+            a.setAttribute("href", "#")
+            a.setAttribute("class", "grey-text")
+            a.addEventListener("click", function(){
+                e.preventDefault()
+            })
+            a.appendChild(document.createTextNode(player.GetPlayList().length + '. ' +name))
+            li.appendChild(a)
             playlistUL.appendChild(li)
 
           
@@ -393,11 +418,15 @@ module.exports.UI = {
     },
     'showDragAndDrop':() =>{
         var dragFileElement = document.createElement("div")
-        dragFileElement.setAttribute("class", "container grey-text text-darken-3")
+        dragFileElement.setAttribute("class", "container white-text text-darken-3")
         dragFileElement.setAttribute("id", "drag-file")
         dragFileElement.appendChild(document.createTextNode("Drop your music directory here..."))
         document.body.appendChild(dragFileElement)
     },
+    'hideDragAndDrop':()=>{
+        var dragFileElement = document.getElementById("drag-file")
+        dragFileElement.style.display = 'none'
+    }
     
     
 

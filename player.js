@@ -113,12 +113,25 @@ Player.prototype = {
             var playbtn_ = document.getElementById("playBtn").firstChild
             playbtn_.innerHTML = "play_arrow"
             this.howlerbank[this.index].stop()
+            
             howlerbank = []
             playList = []
 
             this.playlist = []
             this.howlerbank = []
             this.index  = -1
+            UI.playlistDisplay(this)
+        }
+    },
+    Previous:function(){
+        if(this.index>0 && this.playlist.length >1){
+            var currentPlaying_ = document.getElementById("current-playing")
+            while(currentPlaying_.hasChildNodes()){
+                currentPlaying_.removeChild(currentPlaying_.lastChild)
+            }
+            this.howlerbank[this.index].stop()
+            this.index = this.index - 2
+            this.Play()
         }
     },
     Next:function(){
@@ -204,7 +217,7 @@ Player.prototype = {
                 if(tags['title']!="" && tags['title']!=undefined)
                     {currentPlaying_.appendChild(document.createTextNode(tags['title']))}
                 else{
-                    currentPlaying_.appendChild(document.createTextNode("Unknown"))
+                    currentPlaying_.appendChild(document.createTextNode(this.SongsDB_['file'][indexLocal]))
                 }
                 
                 currentPlaying_.appendChild(document.createElement("br"))
