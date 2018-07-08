@@ -1,6 +1,7 @@
 const musicEngine = require('./musicEngine').musicEngine
 var Howler = require('howler')
 var mm = require("musicmetadata")
+var UI = require('./ui').UI
 
 playList = []
 currentPlaying = 0
@@ -21,8 +22,8 @@ function step(){
     var sound = this.howlerbank[this.index]
     var seek = sound.seek() || 0;
     var timeElement = document.getElementById("time")
-    // var progress = document.getElementsByClassName("pro")
-    // progress.style.width = (((seek / sound.duration()) * 100) || 0) + '%';
+    var progress = document.getElementById("prog")
+    progress.style.width = (((seek / sound.duration()) * 100) || 0) + '%';
     timeElement.innerHTML = formatTime(Math.round(seek))
     if(sound.playing()){
         requestAnimationFrame(step.bind(this))
@@ -35,6 +36,7 @@ var Player = function(){
     this.playing = false
     this.paused = false
     this.index = -1
+
 }
 Player.prototype = {
     Init:function(SongsDB){
@@ -45,6 +47,9 @@ Player.prototype = {
         this.index = -1
         this.SongsDB_ = SongsDB
         this.repeat = false
+    },
+    AddSongsDataBase:function(SongsDB){
+        this.SongsDB_ = SongsDB
     },
     setRepeat:function(){
 
@@ -136,6 +141,13 @@ Player.prototype = {
     },
     GetPlayList:function(){
         return this.playlist
+    }, 
+    GetPlayListLenght:function(){
+        return this.playlist.length
+    },
+
+    GetSongsDB:function(){
+        return this.SongsDB_
     },
     IsPlaying: function(){
         return this.playing
@@ -146,7 +158,7 @@ Player.prototype = {
     AddSongs:function(songs){
         playList.push(songs)
         this.playlist = playList
-        
+        UI.playlistDisplay(this)
         var ho = new Howler.Howl({
             src:[songs],
             
@@ -154,7 +166,8 @@ Player.prototype = {
                 var timeElement = document.getElementById("time")
                 var prog = document.getElementById("prog")
                 prog.removeAttribute("class")
-                prog.setAttribute("class", "indeterminate")
+                prog.setAttribute("class", "determinate")
+                prog.setAttribute("style", "width:0%")
                 timeElement.innerHTML = formatTime(Math.round(this.howlerbank[this.index].duration()))
                 requestAnimationFrame(step.bind(this))
                 var playbtn_ = document.getElementById("playBtn").firstChild

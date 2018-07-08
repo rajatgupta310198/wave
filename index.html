@@ -30,7 +30,7 @@
     </head>
     <body>
         
-         
+        
         <div class="container" id="main">
              <ul class="collection transparent" id="songs">
 
@@ -68,12 +68,21 @@
                         </center>
                     </div>
                     <div class="col s12 m4">
-                            <div id="time" class="grey-text text-darken-2"> </div>
+                            
 
                                 <a href="#" id="repeatBtn" class="tooltiped grey-text" data-position="bottom" data-tooltip="I am a tooltip">
                                     <i class="material-icons">repeat</i>
                                 </a>
-                            
+                                <a href="#" id="playlisyBtn" data-target="playlist" class="dropdown-trigger grey-text"><i class="material-icons">featured_play_list</i></a>
+                                <ul class="dropdown-content" id="playlist">
+                                    <!-- <li><a href="#!">one</a></li>
+    <li><a href="#!">twodfdfgfgfgfgfgggfgfggfgfg </a></li>
+    <li class="divider" tabindex="-1"></li>
+    <li><a href="#!">three</a></li>
+    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li> -->
+                                </ul>
+                                <div id="time" class="grey-text text-darken-2"> </div>
                         <!-- <div id="pa"></div>
                         <div id="pl"></div>
                         <div id="nxt"></div> -->
@@ -105,11 +114,14 @@
         //     album.style.display = "none";
         //     songs.style.display = "block";
         // }
+        ;
         document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
     var elemsTooltip = document.querySelectorAll('.tooltipped');
     var instances_ = M.Tooltip.init(elemsTooltip);
+    var elems_d = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems_d, {constrainWidth:false, hover:true});
   });
     </script>
     <style>

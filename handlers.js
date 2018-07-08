@@ -1,17 +1,18 @@
 const UI = require('./ui').UI
-const core = require('./core').core
+const Core = require('./core').Core
 var player = require("./player")
 var fs = require("fs")
 var Player_ = new player.Player()
-
+var core = new Core()
 console.log(Player_)
 UI.LoadControlButtons(Player_)
-
+UI.playlistDisplay(Player_)
+var songsLoaderFirstTime = true
 if(fs.existsSync(__dirname + '/config.json')){
     UI.songsLoader()
     var jobj = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf-8'))
     var pathLib = jobj["libPath"]
-    core.Init(pathLib).then(
+    core.add(pathLib).then(
         function(SongsDB){
             // setTimeout(()=>{
             var l = document.getElementById("songs-loader")
@@ -31,7 +32,7 @@ else{
         // var lib = core.Init(libPath)
         // var drop = document.getElementById("drag")
         // drop.style.display = 'none'
-        UI.showDragAndDrop()
+        UI.showDragAndDrop('create')
         document.addEventListener('drop', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -40,36 +41,54 @@ else{
               console.log('File(s) you dragged here: ', f.path)
               pathLib = f.path
             }
-            UI.songsLoader()
+            
+            if(window.songsLoaderFirstTime==true)
+            {UI.songsLoader('create')
+            
+             console.log(window.songsLoaderFirstTime)}
+            else{
+                UI.songsLoader('show')
+                console.log(window.songsLoaderFirstTime)
+            }
             console.log(pathLib)
-            core.Init(pathLib).then(
+            core.add(pathLib).then(
                 function(SongsDB){
                     // setTimeout(()=>{
-                    var ele = document.getElementById("drag-file")
-                    var l = document.getElementById("songs-loader")
-                    var so = document.getElementById("songs")
-                    so.style.display = 'block'
-                    so.style.backgroundImage = 'linear-gradient(to top, #86377b 20%, #27273c 80%);'
-                    l.style.display = 'none'
-                    document.body.removeChild(ele)
-                    Player_.Init(SongsDB)
-                    UI.ListDisplaySongs(SongsDB, Player_)
-                    M.toast({html: 'Songs Added', classes: 'rounded'})
+                    
+                        var ele = document.getElementById("drag-file")
+                        
+                        var so = document.getElementById("songs")
+                        so.style.display = 'block'
+                        so.style.backgroundImage = 'linear-gradient(to top, #86377b 20%, #27273c 80%);'
+                        UI.songsLoader('hide')
+                        if(window.songsLoaderFirstTime==true){
+                        Player_.Init(SongsDB)
+                        window.songsLoaderFirstTime = false
+                        console.log("here")
+                        }
+                        else{
+                            console.log("here")
+                            Player_.AddSongsDataBase(SongsDB)
+                        }
+                        UI.ListDisplaySongs(SongsDB, Player_)
+                        M.toast({html: 'Songs Added', classes: 'rounded'})
+                        var config = {
+                            "libPath":pathLib
+                        }
+                        // var  jsCONTENT = JSON.stringify(config)
+                        // fs.writeFile("config.json", jsCONTENT, "utf-8", function(err){
+                        //     if(err){
+                        //         console.log(err)
+                        //     }
+                        //     else{
+                        //         console.log("saved")
+                        //     }
+                        // })
+                    
                     // }, 1)
                 }
             )
-            var config = {
-                "libPath":pathLib
-            }
-            var  jsCONTENT = JSON.stringify(config)
-            fs.writeFile("config.json", jsCONTENT, "utf-8", function(err){
-                if(err){
-                    console.log(err)
-                }
-                else{
-                    console.log("saved")
-                }
-            })
+            
             // setTimeout(() => {
     
             //     if(lib == 0){
@@ -93,25 +112,3 @@ else{
 
 
 }
-// window.addEventListener("keydown", function(e){
-//     e.preventDefault()
-//     console.log(e.keyCode)
-//     var plst = Player_.GetPlayList()
-//     if(e.keyCode==32){
-//         console.log(plst.length)
-//         if(plst.length>0){
-//             if(Player_.IsPaused() == true){
-//                 Player_.Resume()
-//                 console.log(e.keyCode, "resuming")
-//             }
-//             else if(Player_.IsPlaying() == false){
-//                 Player_.Play()
-//                 console.log(e.keyCode, "playing")
-//             }
-//             else if(Player_.IsPlaying() == true && Player_.IsPaused() == false){
-//                 Player_.Pause()
-//                 this.console.log(e.keyCode, "pausing")
-//             }
-//         }
-//     }
-// })

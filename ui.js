@@ -3,7 +3,7 @@ module.exports.UI = {
     'ListDisplaySongs': (SongsDB, player) =>{
         var ul = document.getElementById("songs")
         console.log(SongsDB["file"].length)
-        for(var i = 0; i < SongsDB["file"].length ; i++){
+        for(var i = SongsDB["indexLastDisplayer"] +1; i < SongsDB["file"].length ; i++){
             var li = document.createElement("li")
             li.setAttribute("class", "collection-item avatar hoverable")
             li.setAttribute("style", "font-size:12px")
@@ -196,6 +196,47 @@ module.exports.UI = {
             e.preventDefault()
             player.setRepeat()
         })
+        
+
+         
+    },
+    'playlistDisplay': function(player){
+        var playlistUL = document.getElementById("playlist")
+        if(player.GetPlayList().length == 0){
+            while(playlistUL.hasChildNodes()){
+                playlistUL.removeChild(playlistUL.lastChild)
+            }
+            var lis = document.createElement("li")
+            var i = document.createElement("i")
+            i.setAttribute("class", "material-icons")
+            i.innerHTML = "hourglass_empty"
+            lis.appendChild(i)
+            lis.appendChild(document.createTextNode("No songs :/"))
+            playlistUL.appendChild(lis)
+        }
+        if(player.GetPlayList().length >0){
+            if(player.GetPlayList().length == 1){
+                playlistUL.removeChild(playlistUL.firstChild)
+            }
+            var playlist = player.GetPlayList()
+            var SongsDB = player.GetSongsDB()
+            
+            var li = document.createElement("li")
+            var index = SongsDB['path'].findIndex(result => result == playlist[playlist.length-1])
+            console.log(SongsDB['file'],playlist[playlist.length-1],index)
+            var keys = Object.keys(SongsDB['tags'][index])
+            var name = undefined
+            if(keys[0]=="title"){
+                name = SongsDB['tags'][index][keys[0]]
+            } 
+            if(name == undefined || name ==""){
+                name = "Unknown"
+            }
+            li.appendChild(document.createTextNode(name))
+            playlistUL.appendChild(li)
+
+          
+        }
     },
     'ListDisplayAlbum':(SongsDB, player) =>{
         var mainRow = document.getElementById("albums")
@@ -325,7 +366,11 @@ module.exports.UI = {
         });
         
     },
-    'songsLoader':() =>{
+    'songsLoader':(option) =>{
+        songsLoaderFirstTime = false
+        if(option == 'create')
+        
+        { 
         var divLoader = document.createElement("div")
         divLoader.setAttribute("id", "songs-loader")
         divLoader.setAttribute("class", "container")
@@ -336,7 +381,15 @@ module.exports.UI = {
         intd.setAttribute("class", "indeterminate grey")
         loader.appendChild(intd)
         divLoader.appendChild(loader)
-        document.body.appendChild(divLoader)
+        document.body.appendChild(divLoader)}
+        if(option == 'show'){
+            var divLoader = document.getElementById("songs-loader")
+            divLoader.style.display = 'block'
+        }
+        if(option == 'hide'){
+            var divLoader = document.getElementById("songs-loader")
+            divLoader.style.display = 'none'
+        }
     },
     'showDragAndDrop':() =>{
         var dragFileElement = document.createElement("div")
@@ -344,6 +397,8 @@ module.exports.UI = {
         dragFileElement.setAttribute("id", "drag-file")
         dragFileElement.appendChild(document.createTextNode("Drop your music directory here..."))
         document.body.appendChild(dragFileElement)
-    }
+    },
+    
+    
 
 }
