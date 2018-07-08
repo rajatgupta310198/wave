@@ -8,9 +8,9 @@ function MusicData (){
 		"tags":[],
 		"path":[],
 		"album":[],
-		"artist":[]
+		"artist":[],
+		"indexLastDisplayer":-1
 	}
-	
 }
 
 function m(item){
@@ -31,11 +31,10 @@ function m(item){
 MusicData.prototype.AddLibrary = function(libPath){
 	
 	return new Promise((resolve, reject) =>{
-		console.log("loading....")
+		
 		var listOfMp3s = []
 		
 		listOfMp3s = walkSync(libPath, listOfMp3s)
-		// console.log(listOfMp3s)
 		if(this.listOfMp3s == 0){
 			this.listOfMp3s = listOfMp3s
 			
@@ -44,7 +43,8 @@ MusicData.prototype.AddLibrary = function(libPath){
 				"tags":[],
 				"path":[],
 				"album":[],
-				"artist":[]
+				"artist":[],
+				"indexLastDisplayer":-1
 			}
 			
 			var tags_ = []
@@ -76,6 +76,7 @@ MusicData.prototype.AddLibrary = function(libPath){
 				}
 			}
 			this.SongsDB = SongsDB
+			
 			setTimeout(()=>{
 				resolve(this.SongsDB)
 			}, 3200)
@@ -83,34 +84,38 @@ MusicData.prototype.AddLibrary = function(libPath){
 		}
 		else{
 			var new_index = this.listOfMp3s.length
-			this.listOfMp3s += listOfMp3s
+			console.log(new_index, listOfMp3s)
+			this.listOfMp3s.concat(listOfMp3s)
+
 			var tags_ = []
 			listOfMp3s.forEach(item =>{
 				m(item).then(function(tags){
 
-					tags_.push(tags)
+					this.SongsDB["tags"].push(tags)
 					this.SongsDB["file"].push(item['file'])
 					this.SongsDB["path"].push(item["path"])
 
 				}, function(){
 
-					tags_.push(tags_)
+					this.SongsDB["tags"].push(tags_)
 					this.SongsDB["file"].push(item['file'])
 					this.SongsDB["path"].push(item["path"])
 
 				})
 			})
 
-			this.SongsDB["tags"] += tags_
+			
 			for(var i=new_index;i<this.SongsDB['file'].length; i++){
 				if (this.SongsDB['tags'][i]['album']!=""){
 					this.SongsDB['album'].push(this.SongsDB['tags'][i]['album'])
 				}
 				else{
-					SongsDB['album'].push("Unknown")
+					this.SongsDB['album'].push("Unknown")
 				}
 			}
+			this.SongsDB["indexLastDisplayer"] = this.SongsDB['file'].length - 1
 			setTimeout(()=>{
+				console.log(this.SongsDB)
 				resolve(this.SongsDB)
 			}, 3200)
 
