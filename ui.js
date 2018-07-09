@@ -287,7 +287,7 @@ module.exports.UI = {
             var listOfMp3 = []
             for(var i=0;i<SongsDB["path"].length; i++){
                 if(element == SongsDB["album"][i]){
-                    console.log(SongsDB["path"][i]) //Porn cute juvenile | Son Forces Mom to Fuck Him - Fifi Foxx and Cock Ninja
+                    console.log(SongsDB["path"][i]) 
                     listOfMp3.push({'tags':SongsDB['tags'][i], 'path':SongsDB['path'][i], 'file':SongsDB['file'][i]})
                 }
             }
