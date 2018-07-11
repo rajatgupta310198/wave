@@ -30,10 +30,10 @@ if(fs.existsSync(__dirname + '/config.json')){
 else{
     
         // var lib = core.Init(libPath)
-        // var drop = document.getElementById("drag")
+        var drop = document.getElementById("main")
         // drop.style.display = 'none'
         UI.showDragAndDrop('create')
-        document.addEventListener('drop', function (e) {
+        drop.addEventListener('drop', function (e) {
             e.preventDefault();
             e.stopPropagation();
             var pathLib = ""

@@ -185,12 +185,12 @@ module.exports.UI = {
             }  
         })
 
-        var stopBtn = document.getElementById("stopBtn")
+        // var clearBtn = document.getElementById("clearBtn")
        
-        stopBtn.addEventListener("click", function(e){
-            player.Stop()
+        // clearBtn.addEventListener("click", function(e){
+        //     player.Stop()
              
-        })
+        // })
 
         var previousBtn = document.getElementById("prevBtn")
        
@@ -213,13 +213,14 @@ module.exports.UI = {
             while(playlistUL.hasChildNodes()){
                 playlistUL.removeChild(playlistUL.lastChild)
             }
-
+            
             var lis = document.createElement("li")
             var a = document.createElement("a")
             a.setAttribute("href", "#")
             a.setAttribute("class", "grey-text")
             a.addEventListener("click", function(){
                 e.preventDefault()
+                
             })
             var i = document.createElement("i")
             i.setAttribute("class", "material-icons")
@@ -231,8 +232,11 @@ module.exports.UI = {
             playlistUL.appendChild(lis)
         }
         if(player.GetPlayList().length >0){
+            var li = document.createElement("li")
             if(player.GetPlayList().length == 1){
                 playlistUL.removeChild(playlistUL.firstChild)
+                
+                
             }
             var playlist = player.GetPlayList()
             var SongsDB = player.GetSongsDB()
@@ -396,6 +400,7 @@ module.exports.UI = {
         if(option == 'create')
         
         { 
+            var main = document.getElementById("main")
         var divLoader = document.createElement("div")
         divLoader.setAttribute("id", "songs-loader")
         divLoader.setAttribute("class", "container")
@@ -406,7 +411,7 @@ module.exports.UI = {
         intd.setAttribute("class", "indeterminate grey")
         loader.appendChild(intd)
         divLoader.appendChild(loader)
-        document.body.appendChild(divLoader)}
+        main.appendChild(divLoader)}
         if(option == 'show'){
             var divLoader = document.getElementById("songs-loader")
             divLoader.style.display = 'block'
@@ -417,15 +422,18 @@ module.exports.UI = {
         }
     },
     'showDragAndDrop':() =>{
+        var main = document.getElementById("main")
         var dragFileElement = document.createElement("div")
         dragFileElement.setAttribute("class", "container white-text text-darken-3")
         dragFileElement.setAttribute("id", "drag-file")
         dragFileElement.appendChild(document.createTextNode("Drop your music directory here..."))
-        document.body.appendChild(dragFileElement)
+        main.appendChild(dragFileElement)
+        // return dragFileElement
+         
     },
     'hideDragAndDrop':()=>{
         var dragFileElement = document.getElementById("drag-file")
-        dragFileElement.style.display = 'none'
+        dragFileElement.innerHTML = " "
     }
     
     

@@ -121,6 +121,7 @@ Player.prototype = {
             this.howlerbank = []
             this.index  = -1
             UI.playlistDisplay(this)
+            
         }
     },
     Previous:function(){
@@ -152,6 +153,27 @@ Player.prototype = {
             this.howlerbank[this.index].play()
         }
     },
+    // ClearPlaylist: function(){
+    //     if(this.playlist.length >0){
+    //         howlerbank = []
+    //         playList = []
+    //         if(this.playing == true){
+    //             var p = this.playlist[this.index]
+    //             var h = this.howlerbank[this.index]
+    //             this.playlist.clear()
+    //             this.howlerbank.clear()
+    //             this.howlerbank.push(h)
+    //             this.playlist.push(p)
+    //             this.index = 0
+    //         }
+    //         else{
+    //             this.playlist = []
+    //             this.howlerbank = []
+    //             this.index  = -1
+    //         }
+    //         UI.playlistDisplay(this)
+    //     }
+    // },
     GetPlayList:function(){
         return this.playlist
     }, 
