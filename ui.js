@@ -185,10 +185,17 @@ module.exports.UI = {
             }  
         })
 
-        var stopBtn = document.getElementById("stopBtn")
+        // var clearBtn = document.getElementById("clearBtn")
        
-        stopBtn.addEventListener("click", function(e){
-            player.Stop()
+        // clearBtn.addEventListener("click", function(e){
+        //     player.Stop()
+             
+        // })
+
+        var previousBtn = document.getElementById("prevBtn")
+       
+        previousBtn.addEventListener("click", function(e){
+            player.Previous()
              
         })
 
@@ -213,7 +220,6 @@ module.exports.UI = {
             while(playlistUL.hasChildNodes()){
                 playlistUL.removeChild(playlistUL.lastChild)
             }
-
             var lis = document.createElement("li")
             var a = document.createElement("a")
             a.setAttribute("href", "#")
@@ -417,6 +423,7 @@ module.exports.UI = {
         }
     },
     'showDragAndDrop':() =>{
+        var main = document.getElementById("main")
         var dragFileElement = document.createElement("div")
         dragFileElement.setAttribute("class", "container white-text text-darken-3")
         dragFileElement.setAttribute("id", "drag-file")

@@ -17,14 +17,18 @@ function createWindow(){
         
         // darkTheme:true,
         // frame:false
-        titleBarStyle:"hidden"
+        titleBarStyle:"hidden",
+        backgroundColor: '#FFF',
     
         
         
     })
     
     console.log(app.getAppPath())
-    
+    win.on('ready-to-show', function(){
+        win.show()
+        win.focus()
+    })
     win.loadURL('file://' + __dirname + '/index.html')
     // win.webContents.openDevTools()
     // const menu = Menu.buildFromTemplate(template)
@@ -32,6 +36,7 @@ function createWindow(){
     win.on('closed', () => {
         win = null
     })
+    
 }
 
 

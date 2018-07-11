@@ -9,6 +9,7 @@
         <link href="css/style.css">
         <script src="js/materialize.min.js"></script>
         <style>
+<<<<<<< HEAD
             body{
                 /* background-color: #ffffff;
                 opacity: 0.6; */
@@ -29,8 +30,30 @@
                 padding-bottom: 145px
             }
             
-        </style>
+=======
+        body{
+        /* background-color: #ffffff;
+        opacity: 0.6; */
         
+        background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+        }
+        html{
+            -webkit-user-select:none;
+        }
+        footer{
+        bottom: 0;
+        z-index: 100;
+        position: fixed;
+        width: 100%;
+        -webkit-user-select: none;
+        }
+        #main{
+        padding-bottom: 145px;
+        -webkit-user-select: none;
+        height: 100%;
+        }
+>>>>>>> 43e8f220c0ff88a593f42c7180cf98aaca703819
+        </style>
     </head>
     <body>
         
@@ -102,7 +125,7 @@
     var elemsTooltip = document.querySelectorAll('.tooltipped');
     var instances_ = M.Tooltip.init(elemsTooltip);
     var elems_d = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elems_d, {constrainWidth:false, hover:true});
+    var instances = M.Dropdown.init(elems_d, {constrainWidth:false, hover:true, coverTrigger:false});
   });
     </script>
     <style>
