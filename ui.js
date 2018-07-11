@@ -180,31 +180,27 @@ module.exports.UI = {
         var nextBtn = document.getElementById("nextBtn")
        
         nextBtn.addEventListener("click", function(e){
+            e.preventDefault()
             if(player.GetPlayList().length > 0){
                 player.Next()
             }  
         })
 
-        // var clearBtn = document.getElementById("clearBtn")
+        var clearBtn = document.getElementById("stopBtn")
        
-        // clearBtn.addEventListener("click", function(e){
-        //     player.Stop()
-             
-        // })
-
-        var previousBtn = document.getElementById("prevBtn")
-       
-        previousBtn.addEventListener("click", function(e){
-            player.Previous()
+        clearBtn.addEventListener("click", function(e){
+            player.Stop()
              
         })
 
         var previousBtn = document.getElementById("prevBtn")
        
         previousBtn.addEventListener("click", function(e){
+            e.preventDefault()
             player.Previous()
              
         })
+
         var repeatBtn = document.getElementById("repeatBtn")
         repeatBtn.addEventListener("click", function(e){
             e.preventDefault()
@@ -224,11 +220,12 @@ module.exports.UI = {
             var a = document.createElement("a")
             a.setAttribute("href", "#")
             a.setAttribute("class", "grey-text")
+            a.style.fontSize = 12
             a.addEventListener("click", function(){
                 e.preventDefault()
             })
             var i = document.createElement("i")
-            i.setAttribute("class", "material-icons")
+            i.setAttribute("class", "material-icons small")
             i.innerHTML = "hourglass_empty"
             a.appendChild(document.createTextNode("No songs :/"))
             a.appendChild(i)
@@ -259,6 +256,7 @@ module.exports.UI = {
             var a = document.createElement("a")
             a.setAttribute("href", "#")
             a.setAttribute("class", "grey-text")
+            a.style.fontSize = 12
             a.addEventListener("click", function(){
                 e.preventDefault()
             })

@@ -12,9 +12,9 @@
   "author": "Rajat Gupta",
   "license": "MIT",
   "dependencies": {
-    
     "musicmetadata": "^2.0.5",
-    "howler": "^2.0.9"
+    "howler": "^2.0.9",
+    "node-localstorage": "latest"
   },
   "devDependencies": {
     "asar": "^0.14.3",
