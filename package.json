@@ -7,11 +7,7 @@
     "start": "electron index.js",
     "package": "asar pack build/mac/Wave-darwin-x64/Wave.app/Contents/Resources/app build/mac/Wave-darwin-x64/Wave.app/Contents/Resources/app.asar",
     "build:mac": "electron-packager . --overwrite  --platform=darwin --arch=x64 --out=build/mac  --icon=images/wave-alpha.icns",
-<<<<<<< HEAD
     "build:win": "electron-packager . --overwrite --platform-win32 --arch=ia32 --out=build/win --icon=images/wave_win.ico --asar"
-=======
-    "build:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=build/win --icon=images/wave_win.ico --asar"
->>>>>>> 43e8f220c0ff88a593f42c7180cf98aaca703819
   },
   "author": "Rajat Gupta",
   "license": "MIT",
