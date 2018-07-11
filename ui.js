@@ -3,7 +3,7 @@ module.exports.UI = {
     'ListDisplaySongs': (SongsDB, player) =>{
         var ul = document.getElementById("songs")
         console.log(SongsDB["file"].length)
-        for(var i = 0; i < SongsDB["file"].length ; i++){
+        for(var i = SongsDB["indexLastDisplayer"] +1; i < SongsDB["file"].length ; i++){
             var li = document.createElement("li")
             li.setAttribute("class", "collection-item avatar hoverable")
             li.setAttribute("style", "font-size:12px")
@@ -191,11 +191,77 @@ module.exports.UI = {
             player.Stop()
              
         })
+
+        var previousBtn = document.getElementById("prevBtn")
+       
+        previousBtn.addEventListener("click", function(e){
+            player.Previous()
+             
+        })
         var repeatBtn = document.getElementById("repeatBtn")
         repeatBtn.addEventListener("click", function(e){
             e.preventDefault()
             player.setRepeat()
         })
+        
+
+         
+    },
+    'playlistDisplay': function(player){
+        var playlistUL = document.getElementById("playlist")
+        if(player.GetPlayList().length == 0){
+            while(playlistUL.hasChildNodes()){
+                playlistUL.removeChild(playlistUL.lastChild)
+            }
+
+            var lis = document.createElement("li")
+            var a = document.createElement("a")
+            a.setAttribute("href", "#")
+            a.setAttribute("class", "grey-text")
+            a.addEventListener("click", function(){
+                e.preventDefault()
+            })
+            var i = document.createElement("i")
+            i.setAttribute("class", "material-icons")
+            i.innerHTML = "hourglass_empty"
+            a.appendChild(document.createTextNode("No songs :/"))
+            a.appendChild(i)
+            lis.appendChild(a)
+            
+            playlistUL.appendChild(lis)
+        }
+        if(player.GetPlayList().length >0){
+            if(player.GetPlayList().length == 1){
+                playlistUL.removeChild(playlistUL.firstChild)
+            }
+            var playlist = player.GetPlayList()
+            var SongsDB = player.GetSongsDB()
+            
+            var li = document.createElement("li")
+
+            var index = SongsDB['path'].findIndex(result => result == playlist[playlist.length-1])
+            console.log(SongsDB['file'],playlist[playlist.length-1],index)
+            var keys = Object.keys(SongsDB['tags'][index])
+            var name = undefined
+            if(keys[0]=="title"){
+                name = SongsDB['tags'][index][keys[0]]
+            } 
+            if(name == undefined || name ==""){
+                name = SongsDB['file'][index]
+            }
+
+            var a = document.createElement("a")
+            a.setAttribute("href", "#")
+            a.setAttribute("class", "grey-text")
+            a.addEventListener("click", function(){
+                e.preventDefault()
+            })
+            a.appendChild(document.createTextNode(player.GetPlayList().length + '. ' +name))
+            li.appendChild(a)
+            playlistUL.appendChild(li)
+
+          
+        }
     },
     'ListDisplayAlbum':(SongsDB, player) =>{
         var mainRow = document.getElementById("albums")
@@ -221,7 +287,7 @@ module.exports.UI = {
             var listOfMp3 = []
             for(var i=0;i<SongsDB["path"].length; i++){
                 if(element == SongsDB["album"][i]){
-                    console.log(SongsDB["path"][i]) //Porn cute juvenile | Son Forces Mom to Fuck Him - Fifi Foxx and Cock Ninja
+                    console.log(SongsDB["path"][i]) 
                     listOfMp3.push({'tags':SongsDB['tags'][i], 'path':SongsDB['path'][i], 'file':SongsDB['file'][i]})
                 }
             }
@@ -325,7 +391,11 @@ module.exports.UI = {
         });
         
     },
-    'songsLoader':() =>{
+    'songsLoader':(option) =>{
+        songsLoaderFirstTime = false
+        if(option == 'create')
+        
+        { 
         var divLoader = document.createElement("div")
         divLoader.setAttribute("id", "songs-loader")
         divLoader.setAttribute("class", "container")
@@ -336,14 +406,28 @@ module.exports.UI = {
         intd.setAttribute("class", "indeterminate grey")
         loader.appendChild(intd)
         divLoader.appendChild(loader)
-        document.body.appendChild(divLoader)
+        document.body.appendChild(divLoader)}
+        if(option == 'show'){
+            var divLoader = document.getElementById("songs-loader")
+            divLoader.style.display = 'block'
+        }
+        if(option == 'hide'){
+            var divLoader = document.getElementById("songs-loader")
+            divLoader.style.display = 'none'
+        }
     },
     'showDragAndDrop':() =>{
         var dragFileElement = document.createElement("div")
-        dragFileElement.setAttribute("class", "container grey-text text-darken-3")
+        dragFileElement.setAttribute("class", "container white-text text-darken-3")
         dragFileElement.setAttribute("id", "drag-file")
         dragFileElement.appendChild(document.createTextNode("Drop your music directory here..."))
         document.body.appendChild(dragFileElement)
+    },
+    'hideDragAndDrop':()=>{
+        var dragFileElement = document.getElementById("drag-file")
+        dragFileElement.style.display = 'none'
     }
+    
+    
 
 }

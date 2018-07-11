@@ -11,12 +11,14 @@ function createWindow(){
     let win = new electron.BrowserWindow({
         width:1040,
         height:820,
-        resizable:false,
+        minWidth:820,
+        minHeight:640,
         // transparent:true,
         
         // darkTheme:true,
         // frame:false
         titleBarStyle:"hidden"
+    
         
         
     })

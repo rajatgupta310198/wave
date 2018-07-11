@@ -13,13 +13,17 @@
                 /* background-color: #ffffff;
                 opacity: 0.6; */
                 background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+                -webkit-user-drag: none;
+                -webkit-user-select: none
             }
-        
+            
             footer{
                 bottom: 0;
                 z-index: 100;
                 position: fixed;
                 width: 100%;
+                -webkit-user-drag: none;
+                -webkit-user-select: none
             }
             #main{
                 padding-bottom: 145px
@@ -30,7 +34,7 @@
     </head>
     <body>
         
-         
+        
         <div class="container" id="main">
              <ul class="collection transparent" id="songs">
 
@@ -62,21 +66,25 @@
                         </div>
                         
                         <center>
-                            <a href="#" class="btn-floating  waves-effect waves-light grey" id="stopBtn"><i class="material-icons">stop</i></a>
+                            
+                            <a href="#" class="btn-floating  waves-effect waves-light grey" id="prevBtn"><i class="material-icons">skip_previous</i></a>
                         <a href="#" class="btn-floating  waves-effect waves-light grey" id="playBtn"><i class="material-icons">play_arrow</i></a>
                         <a href="#" class="btn-floating  waves-effect waves-light grey" id="nextBtn"><i class="material-icons">skip_next</i></a>
                         </center>
                     </div>
                     <div class="col s12 m4">
-                            <div id="time" class="grey-text text-darken-2"> </div>
+                            
 
                                 <a href="#" id="repeatBtn" class="tooltiped grey-text" data-position="bottom" data-tooltip="I am a tooltip">
                                     <i class="material-icons">repeat</i>
                                 </a>
-                            
-                        <!-- <div id="pa"></div>
-                        <div id="pl"></div>
-                        <div id="nxt"></div> -->
+                                <a href="#" class="grey-text" id="stopBtn"><i class="material-icons">clear_all</i></a>
+                                <a href="#" id="playlisyBtn" data-target="playlist" class="dropdown-trigger grey-text"><i class="material-icons">featured_play_list</i></a>
+                                <ul class="dropdown-content " id="playlist" style="font-size:10px">
+                                    
+                                </ul>
+                                <div id="time" class="grey-text text-darken-2"> </div>
+                      
                         
                     </div>
                 </div>
@@ -87,29 +95,14 @@
     <script src="handlers.js"></script>
      
     <script>
-        // var album = document.getElementById("albums")
-        // var songs = document.getElementById("songs")
-        // var songlink = document.getElementById("songlink")
-        // var albumlink= document.getElementById("albumlink")
-        // // console.log(album, albumlink, songlink, songs)
-        // albumlink.onclick = function(e){
-        //     e.preventDefault()
-        //     console.log("showing album")
-        //     songs.style.display = "none";
-        //     album.style.display = "block";
-        // }
         
-        // songlink.onclick = function(e){
-        //     e.preventDefault()
-        //     console.log("showing songs")
-        //     album.style.display = "none";
-        //     songs.style.display = "block";
-        // }
         document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
     var elemsTooltip = document.querySelectorAll('.tooltipped');
     var instances_ = M.Tooltip.init(elemsTooltip);
+    var elems_d = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems_d, {constrainWidth:false, hover:true});
   });
     </script>
     <style>
