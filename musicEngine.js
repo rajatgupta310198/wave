@@ -1,4 +1,3 @@
-const id3 = require('node-id3')
 const fs = require("fs")
 const mm = require("musicmetadata")
 
@@ -9,127 +8,123 @@ function MusicData (){
 		"tags":[],
 		"path":[],
 		"album":[],
-		"artist":[]
+		"artist":[],
+		"indexLastDisplayer":-1
 	}
-	
 }
+
+function m(item){
+	return new Promise((res, rej) =>{
+		mm(fs.createReadStream(item['path']), (err, metadata) =>{
+			// console.log(item, metadata)
+			if(err){
+				rej(metadata)
+			}
+			else{
+				res(metadata)
+			}
+			
+		})
+	})
+}
+
 MusicData.prototype.AddLibrary = function(libPath){
 	
-	
-		
 	return new Promise((resolve, reject) =>{
-		console.log("loading....")
+		
 		var listOfMp3s = []
 		
 		listOfMp3s = walkSync(libPath, listOfMp3s)
-		// console.log(listOfMp3s)
-		this.listOfMp3s = listOfMp3s
-		// var buffer = fs.readFileSync(this.listOfMp3s[0]['path'])
-		// var tags = id3.read(buffer)
-		// console.log(tags)
-		SongsDB = {
-			"file":[],
-			"tags":[],
-			"path":[],
-			"album":[],
-			"artist":[]
-		}
-		// for(var i = 0; i<this.listOfMp3s.length ; i++){
-		// 	// console.log(this.listOfMp3s[i]['path'])
-		// 	// var buffer = fs.readFileSync(this.listOfMp3s[i]['path'])
-		// 	// var tags = id3.read(buffer)
-		// 	SongsDB["file"].push(this.listOfMp3s[i]["file"])
-		// 	 mm(fs.createReadStream(this.listOfMp3s[i]['path']), function(err, metadata){
+		if(this.listOfMp3s == 0){
+			this.listOfMp3s = listOfMp3s
+			
+			SongsDB = {
+				"file":[],
+				"tags":[],
+				"path":[],
+				"album":[],
+				"artist":[],
+				"indexLastDisplayer":-1
+			}
+			
+			var tags_ = []
+			
+			listOfMp3s.forEach(item =>{
 				
-		// 		if(err){
-		// 			this.SongsDB["tags"].push(undefined)
-		// 		}
-		// 		else{
-		// 			// console.log(metadata)
-		// 			this.SongsDB["tags"].push(metadata)
+				m(item).then(function(tags){
+					tags_.push(tags)
+					SongsDB["file"].push(item['file'])
+					SongsDB["path"].push(item["path"])
+				}, function(tags){
+					tags_.push(tags)
+					SongsDB["file"].push(item['file'])
+					SongsDB["path"].push(item["path"])
+				})
+				
+				
+			})
+			SongsDB['tags'] = tags_
+				
+			console.log(SongsDB['tags'])
+			for(var i=0;i<SongsDB['file'].length; i++){
+				if (SongsDB['tags'][i]['album']!=""){
+					SongsDB['album'].push(SongsDB['tags'][i]['album'])
 					
-		// 		}
-		// 	})
+				}
+				else{
+					SongsDB['album'].push("Unknown")
+				}
+			}
+			this.SongsDB = SongsDB
 			
-		// 	// SongsDB["tags"].push(tags)
-		// 	SongsDB["path"].push(this.listOfMp3s[i]['path'])
-			
-		// }
-		var tags_ = []
-		function m(item){
-			return new Promise((res, rej) =>{
-				mm(fs.createReadStream(item['path']), (err, metadata) =>{
-					// console.log(item, metadata)
-					if(err){
-						rej(metadata)
-					}
-					else{
-						res(metadata)
-					}
-					
+			setTimeout(()=>{
+				resolve(this.SongsDB)
+			}, 3200)
+
+		}
+		else{
+			var new_index = this.listOfMp3s.length
+			console.log(new_index, listOfMp3s)
+			this.listOfMp3s.concat(listOfMp3s)
+
+			var tags_ = []
+			listOfMp3s.forEach(item =>{
+				m(item).then(function(tags){
+
+					this.SongsDB["tags"].push(tags)
+					this.SongsDB["file"].push(item['file'])
+					this.SongsDB["path"].push(item["path"])
+
+				}, function(){
+
+					this.SongsDB["tags"].push(tags_)
+					this.SongsDB["file"].push(item['file'])
+					this.SongsDB["path"].push(item["path"])
+
 				})
 			})
-		}
-		listOfMp3s.forEach(item =>{
+
 			
-			// mm(fs.createReadStream(item["path"]), (err, metadata) =>{
-			// 	tags_.push(metadata)
-			// 	SongsDB["file"].push(item['file'])
-			// 	SongsDB["path"].push(item["path"])
-			// 	// console.log(metadata)
-			// })
-			m(item).then(function(tags){
-				tags_.push(tags)
-				SongsDB["file"].push(item['file'])
-				SongsDB["path"].push(item["path"])
-			}, function(tags){
-				tags_.push(tags)
-				SongsDB["file"].push(item['file'])
-				SongsDB["path"].push(item["path"])
-			})
-			
-			
-		})
-		SongsDB['tags'] = tags_
-			
-		console.log(SongsDB['tags'])
-		for(var i=0;i<SongsDB['file'].length; i++){
-			if (SongsDB['tags'][i]['album']!=""){
-				SongsDB['album'].push(SongsDB['tags'][i]['album'])
-				
+			for(var i=new_index;i<this.SongsDB['file'].length; i++){
+				if (this.SongsDB['tags'][i]['album']!=""){
+					this.SongsDB['album'].push(this.SongsDB['tags'][i]['album'])
+				}
+				else{
+					this.SongsDB['album'].push("Unknown")
+				}
 			}
-			else{
-				SongsDB['album'].push("Unknown")
-			}
+			this.SongsDB["indexLastDisplayer"] = this.SongsDB['file'].length - 1
+			setTimeout(()=>{
+				console.log(this.SongsDB)
+				resolve(this.SongsDB)
+			}, 3200)
+
 		}
-		this.SongsDB = SongsDB
-		setTimeout(()=>{
-			resolve(this.SongsDB)
-		}, 3200)
-		
+
+		// promise end
 	})
-	// console.log(this.SongsDB)
-	// console.log(this.SongsDB)
-	// setTimeout(()=>{
-	// 	SongsDB['tags'] = tags_
-		
-		
-	// 	for(var i=0;i<SongsDB['file'].length; i++){
-	// 		if (SongsDB['tags'][i]['album']!=""){
-	// 			SongsDB['album'].push(SongsDB['tags'][i]['album'])
-				
-	// 		}
-	// 		else{
-	// 			SongsDB['album'].push("Unknown")
-	// 		}
-	// 	}
-	// 	this.SongsDB = SongsDB	
-	// 	console.log(this.SongsDB)
-	// 	return this.SongsDB
-	// }, 5000);
 	
 }
-
 
 MusicData.prototype.GetSongsDB = function(){
 	return this.SongsDB
