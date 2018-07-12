@@ -1,6 +1,6 @@
 {
   "name": "Wave",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha-final",
   "description": "A simple music player",
   "main": "index.js",
   "scripts": {

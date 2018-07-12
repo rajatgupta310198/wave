@@ -1,4 +1,3 @@
-const musicEngine = require('./musicEngine').musicEngine
 var Howler = require('howler')
 var mm = require("musicmetadata")
 var UI = require('./ui').UI
@@ -58,7 +57,7 @@ Player.prototype = {
         {
             this.repeat = true
             var repeatBtn = document.getElementById("repeatBtn")
-            repeatBtn.setAttribute("class", "btn-floating tooltipped waves-effect waves-light grey text-darken-2")
+            repeatBtn.setAttribute("class", "tooltipped teal-text")
             repeatBtn.setAttribute("data-tooltip", "off repeat")
         }
         else
@@ -288,6 +287,9 @@ Player.prototype = {
         })
         howlerbank.push(ho)
         this.howlerbank = howlerbank
+        if(this.howlerbank.length == 1 && this.playing==false){
+            this.Play()
+        }
     }
 }
 
