@@ -2,6 +2,9 @@
   "name": "Wave",
   "version": "0.1.0-beta",
   "description": "A simple music player",
+  "repository": {
+    "url": "https://github.com/rajatgupta310198/wave"
+  },
   "main": "index.js",
   "scripts": {
     "start": "electron index.js",
@@ -9,7 +12,7 @@
     "build:mac": "electron-packager . --overwrite  --platform=darwin --arch=x64 --out=build/mac  --icon=images/wave-alpha.icns",
     "build:win": "electron-packager . --overwrite --platform-win32 --arch=x86_x64 --out=build/win --icon=images/wave_win.ico --asar"
   },
-  "author": "Rajat Gupta",
+  "author": "Rajat Gupta <rajat310198@outlook.com>",
   "license": "MIT",
   "dependencies": {
     "musicmetadata": "^2.0.5",
